@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import NavigationBar from "@/components/NavigationBar/NavigationBar";
+import NavigationBar from "@/Components/NavigationBar/NavBar";
+import { getDesignTheme } from "@/Components/theme/getDesignTheme";
 import "../styles/globals.css";
 import {
   Box,
@@ -8,7 +9,6 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material";
-import { getDesignTheme } from "@/components/theme/theme";
 
 export default function App({ Component, pageProps }) {
   const theme = useMemo(
