@@ -11,15 +11,12 @@ export default function NavigationBar() {
         height: "75px",
         display: "flex",
         alignItems: "center",
-        // justifyContent: "center",
+
         padding: "0px 32px",
-        position: "fixed",
+
         width: "100%",
-        // border: "20px solid red",
+
         zIndex: 2,
-        // fixed
-        // top: 0,
-        // left: 0,
       }}
     >
       <Box

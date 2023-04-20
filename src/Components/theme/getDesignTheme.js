@@ -133,6 +133,10 @@ export const getDesignTheme = (mode) => ({
             default: "#111111",
             // "#222736",
           },
+
+          comps: {
+            star: "#FFA534",
+          },
         }),
   },
   typography: {
