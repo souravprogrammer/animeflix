@@ -9,13 +9,16 @@ export default function index() {
     <Box
       sx={{
         position: "relative",
-        height: "500px",
-        paddingTop: "100px",
-        px: "64px",
+        height: "80dvh",
+        // paddingTop: "100px",
+        px: "34px",
         overFlow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        // border: "1px solid red",
       }}
     >
-      {/* <Box
+      <Box
         sx={{
           filter: " blur(4px)",
           backgroundImage:
@@ -30,8 +33,8 @@ export default function index() {
           left: 0,
           zIndex: -1,
         }}
-      /> */}
-      <Box
+      />
+      {/* <Box
         sx={{
           position: "absolute",
           top: 0,
@@ -51,13 +54,13 @@ export default function index() {
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           type="video/mp4"
         />
-      </Box>
+      </Box> */}
       <Box
         sx={{
-          //   border: "1px solid red",
+          // border: "1px solid red",
           display: "flex",
           flexDirection: "column",
-          height: "100%",
+          // height: "100%",
         }}
       >
         <Typography variant="h3" fontWeight={"bold"}>
