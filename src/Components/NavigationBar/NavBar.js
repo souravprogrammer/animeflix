@@ -15,8 +15,10 @@ export default function NavigationBar() {
         padding: "0px 32px",
 
         width: "100%",
+        // border: "1px solid red",
 
         zIndex: 2,
+        position: "fixed",
       }}
     >
       <Box

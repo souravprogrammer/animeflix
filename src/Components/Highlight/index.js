@@ -12,9 +12,10 @@ export default function index() {
         height: "500px",
         paddingTop: "100px",
         px: "64px",
+        overFlow: "hidden",
       }}
     >
-      <Box
+      {/* <Box
         sx={{
           filter: " blur(4px)",
           backgroundImage:
@@ -29,7 +30,28 @@ export default function index() {
           left: 0,
           zIndex: -1,
         }}
-      />
+      /> */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: -1,
+        }}
+        component={"video"}
+        controls={false}
+        width="250"
+        muted
+        autoPlay={true}
+      >
+        <source
+          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+          type="video/mp4"
+        />
+      </Box>
       <Box
         sx={{
           //   border: "1px solid red",
