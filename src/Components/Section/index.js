@@ -12,12 +12,10 @@ export default function index({ title, list = [] }) {
         px={2}
         py={4}
         sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(10, 1fr)",
-          gridTemplateRows: " repeat(1, 1fr)",
-          gridColumnGap: "1px",
-          gridRowGap: "1px",
-          // border: "1px solid red",
+          display: "flex",
+          flexWrap: "wrap",
+          gridColumnGap: "8px",
+          gridRowGap: "8px",
         }}
       >
         {list?.map((item, i) => {

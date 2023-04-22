@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 import { Typography, Button, Chip, Paper, Box } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -6,23 +7,31 @@ import StarIcon from "@mui/icons-material/Star";
 
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function card() {
+export default function card({ data }) {
   const [isHover, setIsHover] = useState(false);
+
+  const router = useRouter();
+
+  const infoClickhandler = () => {
+    router.push(
+      {
+        pathname: `/watch/${data.title}`,
+        query: { ai: data._id },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <Box
-      // mx={1}
       sx={{
-        // height: "369px",
         height: "300px",
-        // overflow: "hidden",
-
-        width: "220px",
+        width: "200px",
         minWidth: "220px",
         transition: "all 0.5s",
         boxShadow: isHover ? 3 : 0,
         zIndex: isHover ? 2 : 1,
         transform: isHover ? "scale(1.2)" : "scale(1)",
-        // overflow: "hidden",
       }}
     >
       <Paper
@@ -41,19 +50,23 @@ export default function card() {
         <Box
           component={"img"}
           sx={{
-            //   aspectRatio: "2 / 4",
             width: "100%",
             height: "250px",
           }}
-          src="https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
+          loading="lazy"
+          src={
+            data?.image ??
+            "https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
+          }
         />
         <Typography
           fontWeight={"bold"}
+          onClick={infoClickhandler}
           sx={{
             padding: "8px",
           }}
         >
-          Dragon ball kai
+          {data.title}
         </Typography>
       </Paper>
       <Paper
@@ -84,23 +97,19 @@ export default function card() {
                 display: "flex",
                 alignItems: "center",
                 padding: "8px 0px",
-                // border: "1px solid red",
               }}
             >
               <StarIcon
                 sx={{
                   color: "comps.star",
-
                   transform: "scale(0.8)",
                 }}
               />
-              <Typography fontWeight={"bold"} px={1}>
-                7.23
+              <Typography px={1}>{data.rating}</Typography>
+              <Typography variant="body2" px={1}>
+                {data.duration}
               </Typography>
-              <Typography fontWeight={"bold"} px={1}>
-                24 m
-              </Typography>
-              <Chip label="Series" variant="outlined" size="small" />
+              <Chip label={data.type} variant="outlined" size="small" />
             </div>
           </Box>
 
@@ -112,6 +121,7 @@ export default function card() {
             }}
           >
             <Button
+              onClick={infoClickhandler}
               variant="contained"
               size="small"
               startIcon={<PlayArrowIcon />}
@@ -121,7 +131,12 @@ export default function card() {
             >
               Play
             </Button>
-            <Button variant="outlined" size="small" startIcon={<InfoIcon />}>
+            <Button
+              onClick={infoClickhandler}
+              variant="outlined"
+              size="small"
+              startIcon={<InfoIcon />}
+            >
               info
             </Button>
           </Box>

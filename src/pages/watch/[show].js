@@ -5,7 +5,8 @@ import AnimeCard from "@/Components/Cards/AnimeCard";
 import Heading from "@/Components/Cards/Heading";
 import LaptopIcon from "@mui/icons-material/Laptop";
 
-export default function Show() {
+export default function Show({ data }) {
+  console.log(data);
   return (
     <Box
       sx={{
@@ -103,4 +104,18 @@ function Episode() {
       </Box>
     </ButtonBase>
   );
+}
+
+export async function getServerSideProps(context) {
+  const query = context.query;
+
+  const res = await fetch(process.env.API_URL + "/info/" + query.ai);
+  const data = await res.json();
+  console.log(query);
+
+  return {
+    props: {
+      data,
+    },
+  };
 }

@@ -8,6 +8,17 @@ import { useRouter } from "next/router";
 export default function NavigationBar() {
   const router = useRouter();
   const [search, setSearch] = useState(router.query.search ?? "");
+
+  const handleSearch = () => {
+    router.push(
+      {
+        pathname: "/",
+        query: { search: search },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <Box
       sx={{
@@ -75,11 +86,9 @@ export default function NavigationBar() {
               inputProps={{ "aria-label": "search" }}
               value={search}
               onKeyDown={(ev) => {
-                if (ev.key === "Enter") {
-                  ev.preventDefault();
-                  console.log("enter");
-                  router.push("/?search=" + search);
-                }
+                if (!(ev.key === "Enter")) return;
+                ev.preventDefault();
+                handleSearch();
               }}
               onChange={(e) => setSearch(e.target.value)}
               sx={{
@@ -87,7 +96,11 @@ export default function NavigationBar() {
                 flex: 1,
               }}
             />
-            <ButtonBase sx={{ p: "8px" }} aria-label="search">
+            <ButtonBase
+              onClick={handleSearch}
+              sx={{ p: "8px" }}
+              aria-label="search"
+            >
               <SearchIcon />
             </ButtonBase>
           </Box>
