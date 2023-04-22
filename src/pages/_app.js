@@ -16,7 +16,12 @@ export default function App({ Component, pageProps }) {
     []
   );
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: "100vw",
+        overflow: "hidden",
+      }}
+    >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <>
