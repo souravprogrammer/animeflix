@@ -1,22 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { InputBase, ButtonBase, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
 
 export default function NavigationBar() {
+  const router = useRouter();
+  const [search, setSearch] = useState(router.query.search ?? "");
   return (
     <Box
       sx={{
         height: "75px",
         display: "flex",
         alignItems: "center",
-
         padding: "0px 32px",
-
         width: "100%",
-        // border: "1px solid red",
-
         zIndex: 2,
         position: "fixed",
       }}
@@ -73,13 +72,22 @@ export default function NavigationBar() {
           >
             <InputBase
               placeholder="Search here..."
-              inputProps={{ "aria-label": "search google maps" }}
+              inputProps={{ "aria-label": "search" }}
+              value={search}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter") {
+                  ev.preventDefault();
+                  console.log("enter");
+                  router.push("/?search=" + search);
+                }
+              }}
+              onChange={(e) => setSearch(e.target.value)}
               sx={{
                 color: "rgb(145, 145, 145)",
                 flex: 1,
               }}
             />
-            <ButtonBase type="button" sx={{ p: "8px" }} aria-label="search">
+            <ButtonBase sx={{ p: "8px" }} aria-label="search">
               <SearchIcon />
             </ButtonBase>
           </Box>
