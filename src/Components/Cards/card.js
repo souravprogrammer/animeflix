@@ -26,7 +26,7 @@ export default function card({ data }) {
     <Box
       sx={{
         height: "300px",
-        width: "200px",
+        width: "180px",
         minWidth: "220px",
         transition: "all 0.5s",
         boxShadow: isHover ? 3 : 0,
@@ -36,8 +36,8 @@ export default function card({ data }) {
     >
       <Paper
         elevation={0}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        // onMouseEnter={() => setIsHover(true)}
+        // onMouseLeave={() => setIsHover(false)}
         sx={{
           overflow: "hidden",
           display: "flex",
@@ -45,13 +45,14 @@ export default function card({ data }) {
           flexDirection: "column",
           transition: "all 0.5s",
           transformOrigin: "center",
+          width: "180px",
         }}
       >
         <Box
           component={"img"}
           sx={{
             width: "100%",
-            height: "250px",
+            height: "230px",
           }}
           loading="lazy"
           src={
@@ -69,7 +70,7 @@ export default function card({ data }) {
           {data.title}
         </Typography>
       </Paper>
-      <Paper
+      {/* <Paper
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         elevation={0}
@@ -141,7 +142,7 @@ export default function card({ data }) {
             </Button>
           </Box>
         </Box>
-      </Paper>
+      </Paper> */}
     </Box>
   );
 }

@@ -14,7 +14,7 @@ export default function index({ title, list = [] }) {
         sx={{
           display: "flex",
           flexWrap: "wrap",
-          gridColumnGap: "8px",
+          gridColumnGap: "1px",
           gridRowGap: "8px",
         }}
       >
