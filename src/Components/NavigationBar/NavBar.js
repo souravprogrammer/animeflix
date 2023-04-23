@@ -28,7 +28,7 @@ export default function NavigationBar() {
         padding: "0px 32px",
         width: "100%",
         zIndex: 2,
-        position: "fixed",
+        // position: "fixed",
       }}
     >
       <Box

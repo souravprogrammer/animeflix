@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -9,20 +16,18 @@ export default function index() {
     <Box
       sx={{
         position: "relative",
-        height: "80dvh",
-        // paddingTop: "100px",
-        px: "34px",
+        // height: "80dvh",
+        p: "34px",
         overFlow: "hidden",
         display: "flex",
         alignItems: "center",
-        // border: "1px solid red",
       }}
     >
       <Box
         sx={{
           filter: " blur(4px)",
           backgroundImage:
-            "linear-gradient(rgba(17, 17, 17, 0.801),rgb(17, 17, 17)), url(https://image.tmdb.org/t/p/w500/osq5D28OW66VjwO4jjtxU5JarRv.jpg)",
+            "linear-gradient(rgba(17, 17, 17, 0.901),rgb(17, 17, 17)), url(https://image.tmdb.org/t/p/w500/osq5D28OW66VjwO4jjtxU5JarRv.jpg)",
           backgroundPosition: "top",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -55,71 +60,123 @@ export default function index() {
           type="video/mp4"
         />
       </Box> */}
-      <Box
-        sx={{
-          // border: "1px solid red",
-          display: "flex",
-          flexDirection: "column",
-          // height: "100%",
-        }}
-      >
-        <Typography variant="h3" fontWeight={"bold"}>
-          Title here
-        </Typography>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            // border: "1px solid red",
-            padding: "8px 0px",
-          }}
-        >
-          <StarIcon
-            sx={{
-              color: "comps.star",
-            }}
-          />
-          <Typography fontWeight={"bold"} px={3}>
-            7.23
-          </Typography>
-          <Typography fontWeight={"bold"}>24 m</Typography>
-        </div>
-
-        <Typography
-          sx={{
-            display: "-webkit-box",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-            maxWidth: "50%",
-          }}
-        >
-          Shin-chan, the boy next door, is a walking disaster, creating chaos
-          wherever he goes. With the body of a child and the mind of an adult,
-          Shinchan is wreaking more havoc than any child before. Shin-chan is
-          carefree, optimistic and gets excited about everything. This 5
-          year-old likes to do things his way.
-        </Typography>
+      <Box display={"flex"}>
         <Box
           sx={{
-            padding: "16px 0px",
+            width: "200px",
+            minWidth: "200px",
+            maxWidth: "200px",
+
+            // border: "1px solid red",
           }}
         >
-          <Button
-            variant="outlined"
-            size="large"
-            startIcon={<PlayArrowIcon />}
-            sx={{
-              marginRight: "14px",
+          <Box
+            component={"img"}
+            src={
+              "https://image.tmdb.org/t/p/w500/osq5D28OW66VjwO4jjtxU5JarRv.jpg"
+            }
+            width="100%"
+          />
+        </Box>
+        <Box
+          sx={{
+            // border: "1px solid red",
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+            p: "16px",
+          }}
+        >
+          <Typography variant="h4" fontWeight={"bold"}>
+            Title here
+          </Typography>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              // border: "1px solid red",
+              padding: "8px 0px",
             }}
           >
-            Play
-          </Button>
-          <Button startIcon={<InfoIcon />} variant="outlined" size="large">
-            more Info
-          </Button>
+            <StarIcon
+              sx={{
+                color: "comps.star",
+              }}
+            />
+            <Typography fontWeight={"bold"} px={3}>
+              7.23
+            </Typography>
+            <Typography fontWeight={"bold"}>24 m</Typography>
+          </div>
+
+          <Typography
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              WebkitLineClamp: "4",
+              WebkitBoxOrient: "vertical",
+              maxWidth: "70%",
+            }}
+          >
+            Shin-chan, the boy next door, is a walking disaster, creating chaos
+            wherever he goes. With the body of a child and the mind of an adult,
+            Shinchan is wreaking more havoc than any child before. Shin-chan is
+            carefree, optimistic and gets excited about everything. This 5
+            year-old likes to do things his way.
+          </Typography>
+          {/* <Box
+            sx={{
+              padding: "16px 0px",
+            }}
+          >
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<PlayArrowIcon />}
+              sx={{
+                marginRight: "14px",
+              }}
+            >
+              Play
+            </Button>
+            <Button startIcon={<InfoIcon />} variant="outlined" size="large">
+              more Info
+            </Button>
+          </Box> */}
+
+          <Box
+            sx={{
+              position: "absolute",
+              right: 16,
+              top: 16,
+              // border: "1px solid red",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <FormControl sx={{ m: "2px", minWidth: 100 }}>
+              <Select
+                value={10}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+                size="small"
+                sx={{ padding: "0px", margin: "0px" }}
+                // style={{ margin: "6px", padding: "0px" }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>All</MenuItem>
+                <MenuItem value={20}>Action</MenuItem>
+                <MenuItem value={30}>Drama</MenuItem>
+              </Select>
+            </FormControl>
+            <Button variant="contained" sx={{ color: "#fff" }}>
+              Random
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Box>

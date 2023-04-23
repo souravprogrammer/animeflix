@@ -25,8 +25,15 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <>
-          <NavigationBar />
-          <Component {...pageProps} />
+          <div
+            style={{
+              maxWidth: "1576px",
+              margin: "auto",
+            }}
+          >
+            <NavigationBar />
+            <Component {...pageProps} />
+          </div>
         </>
       </ThemeProvider>
     </div>

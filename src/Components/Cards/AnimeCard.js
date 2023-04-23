@@ -3,30 +3,17 @@ import React from "react";
 import { Box, Typography, Chip } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 
-export default function AnimeCard() {
+export default function AnimeCard({ data }) {
   return (
     <Box
       sx={{
         height: "40dvh",
         position: "relative",
+        background:
+          "linear-gradient(180deg, rgba(30,32,35,1) 0%, rgba(0,0,0,0) 100%)",
+        borderRadius: "5px",
       }}
     >
-      <Box
-        sx={{
-          filter: " blur(4px)",
-          backgroundImage:
-            "linear-gradient(rgba(17, 17, 17, 0.801),rgb(17, 17, 17)), url(https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg)",
-          backgroundPosition: "top",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-        }}
-      />
       <Box
         sx={{
           display: "grid",
@@ -37,17 +24,10 @@ export default function AnimeCard() {
           padding: "34px",
         }}
       >
-        <Box
-          sx={
-            {
-              // border: "1px solid red",
-              // paddingLeft: "34px",
-            }
-          }
-        >
+        <Box>
           <Box
             component={"img"}
-            src="https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
+            src={data?.image}
             sx={{
               height: "250px",
             }}
@@ -60,15 +40,15 @@ export default function AnimeCard() {
               flexDirection: "column",
             }}
           >
-            <Typography variant="h3" fontWeight={"bold"}>
-              Title here
+            <Typography variant="h4" fontWeight={"bold"}>
+              {data?.title}
             </Typography>
 
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                // border: "1px solid red",
+
                 padding: "1px 0px",
               }}
             >
@@ -78,65 +58,34 @@ export default function AnimeCard() {
                 }}
               />
               <Typography fontWeight={"bold"} px={2}>
-                7.23
+                {data?.rating}
               </Typography>
-              <Typography fontWeight={"bold"}>24 m</Typography>
+              <Typography fontWeight={"bold"}>{data?.duration}</Typography>
             </div>
             <Box py={2}>
-              <Chip
-                label="Action"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
-              <Chip label="Drama" size="small" color="primary" sx={{ mx: 1 }} />
-              <Chip
-                label="Action"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
-              <Chip
-                label="Action"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
-              <Chip
-                label="Romance"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
-              <Chip
-                label="Action"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
-              <Chip
-                label="Action"
-                size="small"
-                color="primary"
-                sx={{ mx: 1 }}
-              />
+              {data?.genres?.map((m, i) => {
+                return (
+                  <Chip
+                    label={m}
+                    key={i}
+                    size="small"
+                    color="primary"
+                    sx={{ mx: 1 }}
+                  />
+                );
+              })}
             </Box>
-
             <Typography
               sx={{
                 display: "-webkit-box",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                WebkitLineClamp: "3",
+                WebkitLineClamp: "6",
                 WebkitBoxOrient: "vertical",
-                maxWidth: "50%",
+                maxWidth: "70%",
               }}
             >
-              Shin-chan, the boy next door, is a walking disaster, creating
-              chaos wherever he goes. With the body of a child and the mind of
-              an adult, Shinchan is wreaking more havoc than any child before.
-              Shin-chan is carefree, optimistic and gets excited about
-              everything. This 5 year-old likes to do things his way.
+              {data?.description}
             </Typography>
           </Box>
         </Box>
