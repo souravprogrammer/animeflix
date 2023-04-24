@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/router";
 import {
   Box,
@@ -7,6 +7,7 @@ import {
   ButtonBase,
   Button,
   ButtonGroup,
+  CircularProgress,
 } from "@mui/material";
 import AnimeCard from "@/Components/Cards/AnimeCard";
 import Heading from "@/Components/Cards/Heading";
@@ -18,11 +19,21 @@ import axios from "axios";
 
 export default function Show({ data }) {
   const router = useRouter();
+  const [ispending, startTransition] = useTransition();
   const [episodePlayer, setEpisodePlayer] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (router.query.episode) {
-      setEpisodePlayer(data.episodes[router.query.episode - 1]);
+      startTransition(() => {
+        if (
+          router.query.episode > data.episodes.length ||
+          router.query.episode < 0
+        )
+          router.push("/404");
+        setEpisodePlayer(data.episodes[router.query.episode - 1]);
+        setIsLoading(false);
+      });
     }
   }, [router.query]);
 
@@ -32,98 +43,142 @@ export default function Show({ data }) {
         margin: "auto",
       }}
     >
-      <Box>
-        {episodePlayer ? (
-          <Box
-            sx={{
-              // border: "1px solid red",
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              // alignItems: "center",
-              margin: "16px",
-            }}
-          >
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "grid",
+            placeItems: "center",
+            height: "600px",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box>
+          {episodePlayer ? (
             <Box
               sx={{
+                // border: "1px solid red",
                 display: "flex",
                 justifyContent: "center",
-
+                flexDirection: "column",
+                // alignItems: "center",
                 margin: "16px",
-                border: "1px solid red",
               }}
             >
               <Box
                 sx={{
-                  aspectRatio: "16 / 9",
-                  height: "600px",
-                  width: "80%",
-                  border: "none",
-                }}
-                sandbox="allow-scripts"
-                component={"iframe"}
-                src={episodePlayer?.link}
-              />
-              <Paper
-                sx={{
-                  flex: 1,
-                  py: "16px",
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "16px",
                 }}
               >
-                <Typography
-                  sx={{
-                    padding: "16px",
-                  }}
-                  variant="body"
-                  fontWeight={"bold"}
-                >
-                  Options
-                </Typography>
-
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
+                    aspectRatio: "16 / 9",
+                    height: "600px",
+                    width: "80%",
+                    border: "none",
+                  }}
+                  sandbox="allow-scripts"
+                  component={"iframe"}
+                  src={episodePlayer?.link}
+                />
+                <Paper
+                  sx={{
+                    flex: 1,
+                    py: "16px",
                   }}
                 >
-                  <ButtonBase
+                  <Typography
                     sx={{
-                      height: "70px",
+                      padding: "16px",
+                    }}
+                    variant="body"
+                    fontWeight={"bold"}
+                  >
+                    Options
+                  </Typography>
+
+                  <Box
+                    sx={{
                       display: "flex",
-                      justifyContent: "flex-start",
-                      px: "16px",
+                      flexDirection: "column",
+                      py: "8px",
                     }}
                   >
-                    <Typography>VidStream</Typography>
-                  </ButtonBase>
-                </Box>
-              </Paper>
+                    <ButtonBase
+                      sx={{
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        px: "16px",
+                        borderRight: "5px solid",
+                        borderColor: "primary.main",
+                      }}
+                    >
+                      <Typography>VidStream</Typography>
+                    </ButtonBase>
+                  </Box>
+                </Paper>
+              </Box>
+              <Box
+                p={"8px"}
+                sx={{
+                  justifySelf: "flex-end",
+                  display: "flex",
+                  // border: "1px solid red",
+                  justifyContent: "space-between",
+                }}
+              >
+                <ButtonGroup size="small">
+                  <Button startIcon={<EmojiObjectsIcon />}>light</Button>
+                  <Button
+                    startIcon={<KeyboardBackspaceIcon />}
+                    variant="outlined"
+                    sx={{
+                      display:
+                        parseInt(router.query.episode) === 1 ? "none" : "",
+                    }}
+                    onClick={() => {
+                      setIsLoading(true);
+
+                      router.replace(
+                        {
+                          pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
+                          query: { episode: router.query.episode - 1 },
+                        }
+                        // undefined,
+                        // { shallow: true }
+                      );
+                    }}
+                  >
+                    Prev Episode
+                  </Button>
+                  {parseInt(router.query.episode) ===
+                  data?.episodes?.length ? null : (
+                    <Button
+                      onClick={() => {
+                        setIsLoading(true);
+                        router.replace({
+                          pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
+                          query: {
+                            episode: parseInt(router.query.episode) + 1,
+                          },
+                        });
+                      }}
+                      endIcon={<ArrowRightAltIcon />}
+                      variant="outlined"
+                    >
+                      next Episode
+                    </Button>
+                  )}
+                </ButtonGroup>
+              </Box>
             </Box>
-            <Box
-              p={"8px"}
-              sx={{
-                justifySelf: "flex-end",
-                display: "flex",
-                border: "1px solid red",
-                justifyContent: "space-between",
-              }}
-            >
-              <ButtonGroup size="small">
-                <Button startIcon={<EmojiObjectsIcon />}>light</Button>
-                <Button
-                  startIcon={<KeyboardBackspaceIcon />}
-                  variant="outlined"
-                >
-                  Prev Episode
-                </Button>
-                <Button endIcon={<ArrowRightAltIcon />} variant="outlined">
-                  next Episode
-                </Button>
-              </ButtonGroup>
-            </Box>
-          </Box>
-        ) : null}
-      </Box>
+          ) : null}
+        </Box>
+      )}
       <Box>
         <AnimeCard data={data} />
       </Box>
@@ -141,14 +196,14 @@ export default function Show({ data }) {
             return (
               <Episode
                 onClick={() => {
-                  // console.log(router);
-                  router.push(
+                  setIsLoading(true);
+                  router.replace(
                     {
-                      pathname: router.asPath,
+                      pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
                       query: { episode: index + 1 },
-                    },
-                    undefined,
-                    { shallow: true }
+                    }
+                    // undefined,
+                    // { shallow: true }
                   );
                 }}
                 data={episode}
@@ -217,16 +272,15 @@ function Episode({ data, type, title, onClick }) {
 
 export async function getServerSideProps(context) {
   const query = context.query;
-
-  console.log(query);
-
   try {
-    // const res = await fetch(process.env.API_URL + "/info/" + query.ai);
-    // const data = await res.json();
     const data = await axios.get(
       process.env.API_URL + "/info/" + query.show?.[1]
     );
-    if (data?.data?.data?.length === 0) throw Error("not Found");
+    if (
+      data?.data?.data?.length === 0 ||
+      query.episode > data?.data.data?.[0].episodes.length
+    )
+      throw Error("not Found");
 
     return {
       props: {
