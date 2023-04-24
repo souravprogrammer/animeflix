@@ -15,8 +15,8 @@ export default function card({ data }) {
   const infoClickhandler = () => {
     router.push(
       {
-        pathname: `/watch/${data.title}`,
-        query: { ai: data._id },
+        pathname: `/watch/${data.title}/${data._id}`,
+        // query: { ai: data._id },
       },
       undefined,
       { shallow: true }

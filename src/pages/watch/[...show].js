@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Typography, Paper, ButtonBase } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  ButtonBase,
+  Button,
+  ButtonGroup,
+} from "@mui/material";
 import AnimeCard from "@/Components/Cards/AnimeCard";
 import Heading from "@/Components/Cards/Heading";
 import LaptopIcon from "@mui/icons-material/Laptop";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import axios from "axios";
 
 export default function Show({ data }) {
@@ -16,10 +26,6 @@ export default function Show({ data }) {
     }
   }, [router.query]);
 
-  // useEffect(() => {
-  //   console.log(episodePlayer);
-  // }, [episodePlayer]);
-
   return (
     <Box
       sx={{
@@ -29,10 +35,93 @@ export default function Show({ data }) {
       <Box>
         {episodePlayer ? (
           <Box
-            sandbox="allow-scripts"
-            component={"iframe"}
-            src={episodePlayer?.link}
-          />
+            sx={{
+              // border: "1px solid red",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              // alignItems: "center",
+              margin: "16px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+
+                margin: "16px",
+                border: "1px solid red",
+              }}
+            >
+              <Box
+                sx={{
+                  aspectRatio: "16 / 9",
+                  height: "600px",
+                  width: "80%",
+                  border: "none",
+                }}
+                sandbox="allow-scripts"
+                component={"iframe"}
+                src={episodePlayer?.link}
+              />
+              <Paper
+                sx={{
+                  flex: 1,
+                  py: "16px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: "16px",
+                  }}
+                  variant="body"
+                  fontWeight={"bold"}
+                >
+                  Options
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <ButtonBase
+                    sx={{
+                      height: "70px",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      px: "16px",
+                    }}
+                  >
+                    <Typography>VidStream</Typography>
+                  </ButtonBase>
+                </Box>
+              </Paper>
+            </Box>
+            <Box
+              p={"8px"}
+              sx={{
+                justifySelf: "flex-end",
+                display: "flex",
+                border: "1px solid red",
+                justifyContent: "space-between",
+              }}
+            >
+              <ButtonGroup size="small">
+                <Button startIcon={<EmojiObjectsIcon />}>light</Button>
+                <Button
+                  startIcon={<KeyboardBackspaceIcon />}
+                  variant="outlined"
+                >
+                  Prev Episode
+                </Button>
+                <Button endIcon={<ArrowRightAltIcon />} variant="outlined">
+                  next Episode
+                </Button>
+              </ButtonGroup>
+            </Box>
+          </Box>
         ) : null}
       </Box>
       <Box>
@@ -129,10 +218,14 @@ function Episode({ data, type, title, onClick }) {
 export async function getServerSideProps(context) {
   const query = context.query;
 
+  console.log(query);
+
   try {
     // const res = await fetch(process.env.API_URL + "/info/" + query.ai);
     // const data = await res.json();
-    const data = await axios.get(process.env.API_URL + "/info/" + query.ai);
+    const data = await axios.get(
+      process.env.API_URL + "/info/" + query.show?.[1]
+    );
     if (data?.data?.data?.length === 0) throw Error("not Found");
 
     return {
