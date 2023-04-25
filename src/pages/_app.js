@@ -1,7 +1,10 @@
 import { useMemo } from "react";
 import NavigationBar from "@/Components/NavigationBar/NavBar";
+import Footer from "@/Components/Footer";
 import { getDesignTheme } from "@/Components/theme/getDesignTheme";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
+
 import {
   Box,
   createTheme,
@@ -10,7 +13,10 @@ import {
   ThemeProvider,
 } from "@mui/material";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const theme = useMemo(
     () => responsiveFontSizes(createTheme(getDesignTheme("dark"))),
     []
@@ -22,20 +28,29 @@ export default function App({ Component, pageProps }) {
         overflow: "hidden",
       }}
     >
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <>
-          <div
-            style={{
-              maxWidth: "1576px",
-              margin: "auto",
-            }}
-          >
-            <NavigationBar />
-            <Component {...pageProps} />
-          </div>
-        </>
-      </ThemeProvider>
+      <SessionProvider session={session}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <>
+            <div
+              style={{
+                maxWidth: "1576px",
+                margin: "auto",
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100dvh",
+                // border: "1px solid red",
+              }}
+            >
+              <NavigationBar />
+              <Box sx={{ flex: 1 }}>
+                <Component {...pageProps} />
+              </Box>
+              <Footer />
+            </div>
+          </>
+        </ThemeProvider>
+      </SessionProvider>
     </div>
   );
 }

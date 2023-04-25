@@ -4,10 +4,15 @@ import Highlight from "@/Components/Highlight";
 import Section from "@/Components/Section";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home({ data }) {
   const [searchResult, setSearchResult] = useState(data?.data ?? []);
   const router = useRouter();
+  const { data: session } = useSession();
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
   useEffect(() => {
     console.log(searchResult);
     console.log(router.query);

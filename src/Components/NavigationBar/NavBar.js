@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { InputBase, ButtonBase, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function NavigationBar() {
   const router = useRouter();
@@ -108,6 +109,9 @@ export default function NavigationBar() {
 
         <Box>
           <Button
+            onClick={() => {
+              // signIn();
+            }}
             variant="outlined"
             size="large"
             sx={{
