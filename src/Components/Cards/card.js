@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-import { Typography, Button, Chip, Paper, Box } from "@mui/material";
+import { Typography, Button, Chip, Paper, Box, Popper } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StarIcon from "@mui/icons-material/Star";
-
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import InfoIcon from "@mui/icons-material/Info";
 
 export default function card({ data }) {
   const [isHover, setIsHover] = useState(false);
+  const ref = useRef();
+  const id = isHover ? "simple-popoer" : undefined;
 
   const router = useRouter();
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const infoClickhandler = () => {
     router.push(
       {
         pathname: `/watch/${data.title}/${data._id}`,
-        // query: { ai: data._id },
       },
       undefined,
       { shallow: true }
@@ -29,19 +33,21 @@ export default function card({ data }) {
         width: "180px",
         minWidth: "220px",
         transition: "all 0.5s",
-        boxShadow: isHover ? 3 : 0,
-        zIndex: isHover ? 2 : 1,
-        transform: isHover ? "scale(1.2)" : "scale(1)",
       }}
     >
       <Paper
+        ref={ref}
         elevation={0}
-        // onMouseEnter={() => setIsHover(true)}
-        // onMouseLeave={() => setIsHover(false)}
+        onMouseEnter={(e) => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
         sx={{
           overflow: "hidden",
           display: "flex",
-          position: "relative",
+          // position: "relative",
           flexDirection: "column",
           transition: "all 0.5s",
           transformOrigin: "center",
@@ -49,100 +55,73 @@ export default function card({ data }) {
         }}
       >
         <Box
-          component={"img"}
           sx={{
-            width: "100%",
+            border: "1px solid red",
             height: "230px",
+            width: "100%",
+            position: "relative",
           }}
-          loading="lazy"
-          src={
-            data?.image ??
-            "https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
-          }
-        />
+        >
+          <Box
+            component={"img"}
+            sx={{
+              height: "100%",
+              width: "100%",
+            }}
+            loading="lazy"
+            src={
+              data?.image ??
+              "https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
+            }
+          />
+
+          <Box
+            sx={{
+              position: "absolute",
+              display: "grid",
+              placeItems: "center",
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0,0,0,0.6)",
+              top: 0,
+              left: 0,
+              opacity: isHover ? 1 : 0,
+              transition: "all 0.3s",
+            }}
+          >
+            <PlayCircleOutlineIcon
+              color={"primary"}
+              sx={{ width: "74px", height: "74px" }}
+            />
+          </Box>
+        </Box>
+
         <Typography
           fontWeight={"bold"}
           onClick={infoClickhandler}
           sx={{
             padding: "8px",
+            ":hover": {
+              color: "grey",
+            },
           }}
         >
           {data.title}
         </Typography>
       </Paper>
-      {/* <Paper
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        elevation={0}
-        sx={{
-          transition: "all 0.5s",
-          opacity: isHover ? 1 : 0,
-          pointerEvents: isHover ? "all" : "none",
-          paddingBottom: "8px",
-        }}
-      >
-        <Box
-          sx={{
-            opacity: isHover ? 1 : 0,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              px: "8px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "8px 0px",
-              }}
-            >
-              <StarIcon
-                sx={{
-                  color: "comps.star",
-                  transform: "scale(0.8)",
-                }}
-              />
-              <Typography px={1}>{data.rating}</Typography>
-              <Typography variant="body2" px={1}>
-                {data.duration}
-              </Typography>
-              <Chip label={data.type} variant="outlined" size="small" />
-            </div>
-          </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              padidng: "8px",
-              px: "8px",
-            }}
-          >
-            <Button
-              onClick={infoClickhandler}
-              variant="contained"
-              size="small"
-              startIcon={<PlayArrowIcon />}
-              sx={{
-                marginRight: "8px",
-              }}
-            >
-              Play
-            </Button>
-            <Button
-              onClick={infoClickhandler}
-              variant="outlined"
-              size="small"
-              startIcon={<InfoIcon />}
-            >
-              info
-            </Button>
+      {ref.current && (
+        <Popper
+          id={id}
+          open={isHover}
+          anchorEl={ref.current}
+          placement="right-start"
+        >
+          <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+            The content of the Popper.
           </Box>
-        </Box>
-      </Paper> */}
+        </Popper>
+      )}
     </Box>
   );
 }

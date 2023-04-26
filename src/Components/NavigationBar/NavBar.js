@@ -11,14 +11,20 @@ export default function NavigationBar() {
   const [search, setSearch] = useState(router.query.search ?? "");
 
   const handleSearch = () => {
-    router.push(
-      {
+    if (!search) {
+      router.push({
         pathname: "/",
-        query: { search: search },
-      },
-      undefined,
-      { shallow: true }
-    );
+      });
+    } else {
+      router.push(
+        {
+          pathname: "/",
+          query: { search: search },
+        }
+        // undefined,
+        // { shallow: true }
+      );
+    }
   };
   return (
     <Box
@@ -53,6 +59,9 @@ export default function NavigationBar() {
             sx={{
               color: "primary.main",
               paddingRight: "16px",
+            }}
+            onClick={() => {
+              router.push("/");
             }}
           >
             Anime
