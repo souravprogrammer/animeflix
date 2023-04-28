@@ -24,6 +24,7 @@ export default function NavigationBar() {
         // undefined,
         // { shallow: true }
       );
+      setSearch("");
     }
   };
   return (

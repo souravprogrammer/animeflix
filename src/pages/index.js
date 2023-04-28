@@ -21,7 +21,16 @@ export default function Home({ data }) {
     <Box sx={{ minHeight: "100dvh" }}>
       {router?.query?.search ? (
         <Box pt="75px">
-          <Section title={"search Result"} list={searchResult} />
+          <Section
+            title={`search Result for "${router?.query?.search}"`}
+            list={searchResult}
+            type="search"
+            result={{
+              message: searchResult?.length
+                ? `we got you ${searchResult?.length} results with ${router?.query?.search} keyword.`
+                : "Oh no! We can't find anything with this keyword.",
+            }}
+          />
         </Box>
       ) : (
         <>

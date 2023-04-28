@@ -127,34 +127,35 @@ export default function Show({ data }) {
                 sx={{
                   justifySelf: "flex-end",
                   display: "flex",
-                  // border: "1px solid red",
                   justifyContent: "space-between",
                 }}
               >
                 <ButtonGroup size="small">
                   <Button startIcon={<EmojiObjectsIcon />}>light</Button>
-                  <Button
-                    startIcon={<KeyboardBackspaceIcon />}
-                    variant="outlined"
-                    sx={{
-                      display:
-                        parseInt(router.query.episode) === 1 ? "none" : "",
-                    }}
-                    onClick={() => {
-                      setIsLoading(true);
+                  {parseInt(router.query.episode) === 1 ? null : (
+                    <Button
+                      startIcon={<KeyboardBackspaceIcon />}
+                      variant="outlined"
+                      // sx={{
+                      //   display:
+                      //     parseInt(router.query.episode) === 1 ? "none" : "",
+                      // }}
+                      onClick={() => {
+                        setIsLoading(true);
 
-                      router.replace(
-                        {
-                          pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
-                          query: { episode: router.query.episode - 1 },
-                        }
-                        // undefined,
-                        // { shallow: true }
-                      );
-                    }}
-                  >
-                    Prev Episode
-                  </Button>
+                        router.replace(
+                          {
+                            pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
+                            query: { episode: router.query.episode - 1 },
+                          }
+                          // undefined,
+                          // { shallow: true }
+                        );
+                      }}
+                    >
+                      Prev Episode
+                    </Button>
+                  )}
                   {parseInt(router.query.episode) ===
                   data?.episodes?.length ? null : (
                     <Button

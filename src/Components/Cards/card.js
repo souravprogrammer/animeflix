@@ -17,6 +17,8 @@ export default function card({ data }) {
     setAnchorEl(null);
   };
 
+  console.log(data);
+
   const infoClickhandler = () => {
     router.push(
       {
@@ -38,6 +40,7 @@ export default function card({ data }) {
       <Paper
         ref={ref}
         elevation={0}
+        onClick={infoClickhandler}
         onMouseEnter={(e) => {
           setIsHover(true);
         }}
@@ -52,14 +55,15 @@ export default function card({ data }) {
           transition: "all 0.5s",
           transformOrigin: "center",
           width: "180px",
+          cursor: "pointer",
         }}
       >
         <Box
           sx={{
-            border: "1px solid red",
             height: "230px",
             width: "100%",
             position: "relative",
+            overflow: "hidden",
           }}
         >
           <Box
@@ -67,6 +71,8 @@ export default function card({ data }) {
             sx={{
               height: "100%",
               width: "100%",
+              transition: "all 0.4s",
+              transform: isHover ? "scale(1.2)" : "scale(1)",
             }}
             loading="lazy"
             src={
@@ -113,13 +119,78 @@ export default function card({ data }) {
       {ref.current && (
         <Popper
           id={id}
+          onMouseEnter={(e) => {
+            setIsHover(true);
+          }}
+          onMouseLeave={() => {
+            setIsHover(false);
+          }}
           open={isHover}
           anchorEl={ref.current}
           placement="right-start"
+          sx={{
+            maxWidth: "400px",
+          }}
         >
-          <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-            The content of the Popper.
-          </Box>
+          <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
+            <Typography variant="h6" sx={{ color: "#fff" }}>
+              {data.title}
+            </Typography>
+            <Box>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+
+                  padding: "1px 0px",
+                }}
+              >
+                <StarIcon
+                  sx={{
+                    color: "comps.star",
+                  }}
+                />
+                <Typography fontWeight={"bold"} px={2}>
+                  {data?.rating}
+                </Typography>
+                <Typography fontWeight={"bold"}>{data?.duration}</Typography>
+                <Chip
+                  sx={{ margin: "0px 8px" }}
+                  label={data.type}
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+            </Box>
+            {data?.genres?.length ? (
+              <Box>
+                <Typography>genres</Typography>
+                {data?.genres.map((g, i) => {
+                  return (
+                    <Chip
+                      variant="outlined"
+                      color="primary"
+                      label={g}
+                      key={i}
+                      sx={{
+                        margin: "4px",
+                      }}
+                      clickable
+                    />
+                  );
+                })}
+              </Box>
+            ) : null}
+            <Typography>{data?.des}</Typography>
+
+            <Button
+              onClick={infoClickhandler}
+              variant="outlined"
+              sx={{ marginTop: "16px" }}
+            >
+              Watch Now
+            </Button>
+          </Paper>
         </Popper>
       )}
     </Box>
