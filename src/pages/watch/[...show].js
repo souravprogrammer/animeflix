@@ -58,11 +58,9 @@ export default function Show({ data }) {
           {episodePlayer ? (
             <Box
               sx={{
-                // border: "1px solid red",
                 display: "flex",
                 justifyContent: "center",
                 flexDirection: "column",
-                // alignItems: "center",
                 margin: "16px",
               }}
             >
@@ -83,6 +81,7 @@ export default function Show({ data }) {
                   sandbox="allow-scripts"
                   component={"iframe"}
                   src={episodePlayer?.link}
+                  allow="fullscreen;"
                 />
                 <Paper
                   sx={{

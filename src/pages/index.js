@@ -7,10 +7,9 @@ import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 
-export default function Home({ data }) {
+export default function Home({ data, popularData, randomData, highlight }) {
   const [searchResult, setSearchResult] = useState(data?.data ?? []);
   const router = useRouter();
-
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -34,9 +33,9 @@ export default function Home({ data }) {
         </Box>
       ) : (
         <>
-          <Highlight />
-          <Section title={"Recently Added"} list={[{}]} />
-          <Section title={"trending"} list={[{}]} />
+          <Highlight data={highlight} />
+          <Section title={"Most Popular"} list={popularData ?? []} />
+          <Section title={"recommended"} list={randomData ?? []} />
         </>
       )}
     </Box>
@@ -72,18 +71,26 @@ function useSearchAnime(keyw, obj) {
   return { searchAnime, isLoading };
 }
 export async function getServerSideProps(context) {
+  let serachedData = [];
+  let popularData = [];
+  let randomData = [];
   if (context.query.search) {
     const res = await fetch(
       process.env.API_URL + `/search?keyw=${context.query.search}`
     );
-    const data = await res.json();
-    return {
-      props: {
-        data,
-      },
-    };
+    serachedData = await res.json();
+  } else {
+    const d = await axios.get(process.env.API_URL + "/popular");
+    popularData = d.data?.data?.list;
+    const rand = await axios.get(process.env.API_URL + "/random");
+    randomData = rand.data?.data?.list;
   }
   return {
-    props: {},
+    props: {
+      data: serachedData,
+      popularData: popularData,
+      randomData: randomData,
+      highlight: randomData[Math.floor(Math.random() * randomData.length)],
+    },
   };
 }

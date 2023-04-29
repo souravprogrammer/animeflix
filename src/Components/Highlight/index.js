@@ -11,7 +11,8 @@ import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
-export default function index() {
+export default function Index({ data }) {
+  console.log(">> ", data);
   return (
     <Box
       sx={{
@@ -26,8 +27,7 @@ export default function index() {
       <Box
         sx={{
           filter: " blur(4px)",
-          backgroundImage:
-            "linear-gradient(rgba(17, 17, 17, 0.901),rgb(17, 17, 17)), url(https://image.tmdb.org/t/p/w500/osq5D28OW66VjwO4jjtxU5JarRv.jpg)",
+          backgroundImage: `linear-gradient(rgba(17, 17, 17, 0.901),rgb(17, 17, 17)), url(${data?.image})`,
           backgroundPosition: "top",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -72,9 +72,8 @@ export default function index() {
         >
           <Box
             component={"img"}
-            src={
-              "https://image.tmdb.org/t/p/w500/osq5D28OW66VjwO4jjtxU5JarRv.jpg"
-            }
+            loading="lazy"
+            src={data?.image}
             width="100%"
           />
         </Box>
@@ -88,7 +87,7 @@ export default function index() {
           }}
         >
           <Typography variant="h4" fontWeight={"bold"}>
-            Title here
+            {data?.title}
           </Typography>
 
           <div
@@ -105,9 +104,9 @@ export default function index() {
               }}
             />
             <Typography fontWeight={"bold"} px={3}>
-              7.23
+              {data?.rating}
             </Typography>
-            <Typography fontWeight={"bold"}>24 m</Typography>
+            <Typography fontWeight={"bold"}>{data?.duration}</Typography>
           </div>
 
           <Typography
@@ -120,11 +119,7 @@ export default function index() {
               maxWidth: "70%",
             }}
           >
-            Shin-chan, the boy next door, is a walking disaster, creating chaos
-            wherever he goes. With the body of a child and the mind of an adult,
-            Shinchan is wreaking more havoc than any child before. Shin-chan is
-            carefree, optimistic and gets excited about everything. This 5
-            year-old likes to do things his way.
+            {data?.des}
           </Typography>
           {/* <Box
             sx={{

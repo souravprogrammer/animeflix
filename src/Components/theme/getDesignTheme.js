@@ -79,6 +79,7 @@ export const getDesignTheme = (mode) => ({
           // palette values for dark mode
           primary: {
             main: "#1DB954",
+            light: "#77d598",
           },
           secondary: {
             main: "#6fb33c",

@@ -32,9 +32,14 @@ export default function card({ data }) {
     <Box
       sx={{
         height: "300px",
-        width: "180px",
-        minWidth: "220px",
+        width: "200px",
+        // minWidth: "220px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         transition: "all 0.5s",
+        padding: "8px",
+        overflow: "hidden",
       }}
     >
       <Paper
@@ -56,6 +61,7 @@ export default function card({ data }) {
           transformOrigin: "center",
           width: "180px",
           cursor: "pointer",
+          // border: "1px solid red",
         }}
       >
         <Box

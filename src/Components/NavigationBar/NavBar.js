@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { InputBase, ButtonBase, Button } from "@mui/material";
+import PopupProfile from "../Profile/PopoupProfile";
+
+import {
+  InputBase,
+  ButtonBase,
+  Button,
+  Grid,
+  Popper,
+  ClickAwayListener,
+  Grow,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 
 export default function NavigationBar() {
   const router = useRouter();
   const [search, setSearch] = useState(router.query.search ?? "");
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
 
   const handleSearch = () => {
     if (!search) {
@@ -36,7 +52,6 @@ export default function NavigationBar() {
         padding: "0px 32px",
         width: "100%",
         zIndex: 2,
-        // position: "fixed",
       }}
     >
       <Box
@@ -57,13 +72,13 @@ export default function NavigationBar() {
           <Typography
             variant="h4"
             fontWeight={"bold"}
+            component={"a"}
             sx={{
               color: "primary.main",
               paddingRight: "16px",
+              textDecoration: "none",
             }}
-            onClick={() => {
-              router.push("/");
-            }}
+            href="/"
           >
             Anime
             <Typography
@@ -117,21 +132,98 @@ export default function NavigationBar() {
           </Box>
         </div>
 
-        <Box>
-          <Button
-            onClick={() => {
-              // signIn();
-            }}
-            variant="outlined"
-            size="large"
-            sx={{
-              borderRadius: "20px",
-            }}
-          >
-            Sign In
-          </Button>
-        </Box>
+        {session === null ? (
+          <Box>
+            <Button
+              onClick={() => {
+                signIn();
+              }}
+              variant="outlined"
+              size="large"
+              sx={{
+                borderRadius: "20px",
+              }}
+            >
+              Sign In
+            </Button>
+          </Box>
+        ) : (
+          session !== undefined && <User user={session?.user} />
+        )}
       </Box>
     </Box>
   );
 }
+
+const User = ({ user }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Grid alignItems={"center"}>
+        <Button
+          color="error"
+          onClick={(e) => {
+            setAnchorEl(e.currentTarget);
+            setOpen(true);
+          }}
+          sx={{
+            ml: "10px",
+            p: "0px",
+            textTransform: "capitalize",
+            color: "text.normal",
+          }}
+        >
+          <Grid
+            sx={{
+              width: "30px",
+              height: "30px",
+              m: "3px 8px",
+              border: "2px solid",
+              borderColor: "primary.dark",
+              borderRadius: "50%",
+            }}
+          >
+            <>
+              <Grid
+                component={"img"}
+                src={user?.image}
+                sx={{
+                  maxWidth: "26px",
+                  maxHeight: "26px",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                }}
+              />
+            </>
+          </Grid>
+        </Button>
+      </Grid>
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        sx={{ zIndex: 1000 }}
+        placement="bottom-end"
+        disablePortal
+        transition
+      >
+        {({ TransitionProps }) => (
+          <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <Grow
+              {...TransitionProps}
+              style={{ transformOrigin: "right 0 0" }}
+              unmountOnExit
+            >
+              <Grid sx={{ mt: "16px", mr: "8px" }}>
+                <PopupProfile setAnchorEl={setOpen} user={user} />
+              </Grid>
+            </Grow>
+          </ClickAwayListener>
+        )}
+      </Popper>
+    </>
+  );
+};
