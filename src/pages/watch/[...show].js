@@ -8,6 +8,7 @@ import {
   Button,
   ButtonGroup,
   CircularProgress,
+  ClickAwayListener,
 } from "@mui/material";
 import AnimeCard from "@/Components/Cards/AnimeCard";
 import Heading from "@/Components/Cards/Heading";
@@ -22,6 +23,7 @@ export default function Show({ data }) {
   const [ispending, startTransition] = useTransition();
   const [episodePlayer, setEpisodePlayer] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isOff, setIsOff] = useState(true);
 
   useEffect(() => {
     if (router.query.episode) {
@@ -37,12 +39,31 @@ export default function Show({ data }) {
     }
   }, [router.query]);
 
+  useEffect(() => {
+    if (!isOff) {
+    }
+  }, [isOff]);
+
   return (
     <Box
       sx={{
         margin: "auto",
       }}
     >
+      <Box
+        sx={{
+          position: "fixed",
+          pointerEvents: "none",
+
+          width: "100dvw",
+          height: "100dvh",
+          backgroundColor: "#000",
+          opacity: isOff ? 0 : 0.99,
+          zIndex: 2,
+          top: 0,
+          left: 0,
+        }}
+      />
       {isLoading ? (
         <Box
           sx={{
@@ -56,126 +77,135 @@ export default function Show({ data }) {
       ) : (
         <Box>
           {episodePlayer ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                margin: "16px",
-              }}
-            >
+            <ClickAwayListener onClickAway={() => setIsOff(true)}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
+                  flexDirection: "column",
                   margin: "16px",
                 }}
               >
                 <Box
                   sx={{
-                    aspectRatio: "16 / 9",
-                    height: "600px",
-                    width: "80%",
-                    border: "none",
-                  }}
-                  sandbox="allow-scripts"
-                  component={"iframe"}
-                  src={episodePlayer?.link}
-                  allow="fullscreen;"
-                />
-                <Paper
-                  sx={{
-                    flex: 1,
-                    py: "16px",
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "16px",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      padding: "16px",
-                    }}
-                    variant="body"
-                    fontWeight={"bold"}
-                  >
-                    Options
-                  </Typography>
-
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      py: "8px",
+                      position: "sticky",
+                      zIndex: 3,
+                      aspectRatio: "16 / 9",
+                      height: "600px",
+                      width: "80%",
+                      border: "none",
+                    }}
+                    sandbox="allow-scripts"
+                    component={"iframe"}
+                    src={episodePlayer?.link}
+                    allow="fullscreen;"
+                  />
+                  <Paper
+                    sx={{
+                      flex: 1,
+                      py: "16px",
                     }}
                   >
-                    <ButtonBase
+                    <Typography
                       sx={{
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        px: "16px",
-                        borderRight: "5px solid",
-                        borderColor: "primary.main",
+                        padding: "16px",
                       }}
+                      variant="body"
+                      fontWeight={"bold"}
                     >
-                      <Typography>VidStream</Typography>
-                    </ButtonBase>
-                  </Box>
-                </Paper>
-              </Box>
-              <Box
-                p={"8px"}
-                sx={{
-                  justifySelf: "flex-end",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <ButtonGroup size="small">
-                  <Button startIcon={<EmojiObjectsIcon />}>light</Button>
-                  {parseInt(router.query.episode) === 1 ? null : (
-                    <Button
-                      startIcon={<KeyboardBackspaceIcon />}
-                      variant="outlined"
-                      // sx={{
-                      //   display:
-                      //     parseInt(router.query.episode) === 1 ? "none" : "",
-                      // }}
-                      onClick={() => {
-                        setIsLoading(true);
+                      Options
+                    </Typography>
 
-                        router.replace(
-                          {
-                            pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
-                            query: { episode: router.query.episode - 1 },
-                          }
-                          // undefined,
-                          // { shallow: true }
-                        );
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        py: "8px",
                       }}
                     >
-                      Prev Episode
-                    </Button>
-                  )}
-                  {parseInt(router.query.episode) ===
-                  data?.episodes?.length ? null : (
+                      <ButtonBase
+                        sx={{
+                          height: "50px",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          px: "16px",
+                          borderRight: "5px solid",
+                          borderColor: "primary.main",
+                        }}
+                      >
+                        <Typography>VidStream</Typography>
+                      </ButtonBase>
+                    </Box>
+                  </Paper>
+                </Box>
+                <Box
+                  p={"8px"}
+                  sx={{
+                    justifySelf: "flex-end",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <ButtonGroup size="small">
                     <Button
-                      onClick={() => {
-                        setIsLoading(true);
-                        router.replace({
-                          pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
-                          query: {
-                            episode: parseInt(router.query.episode) + 1,
-                          },
-                        });
-                      }}
-                      endIcon={<ArrowRightAltIcon />}
-                      variant="outlined"
+                      onClick={() => setIsOff(false)}
+                      startIcon={<EmojiObjectsIcon />}
                     >
-                      next Episode
+                      light
                     </Button>
-                  )}
-                </ButtonGroup>
+                    {parseInt(router.query.episode) === 1 ? null : (
+                      <Button
+                        startIcon={<KeyboardBackspaceIcon />}
+                        variant="outlined"
+                        // sx={{
+                        //   display:
+                        //     parseInt(router.query.episode) === 1 ? "none" : "",
+                        // }}
+                        onClick={() => {
+                          setIsLoading(true);
+
+                          router.replace(
+                            {
+                              pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
+                              query: { episode: router.query.episode - 1 },
+                            }
+                            // undefined,
+                            // { shallow: true }
+                          );
+                        }}
+                      >
+                        Prev Episode
+                      </Button>
+                    )}
+                    {parseInt(router.query.episode) ===
+                    data?.episodes?.length ? null : (
+                      <Button
+                        onClick={() => {
+                          setIsLoading(true);
+                          router.replace({
+                            pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,
+                            query: {
+                              episode: parseInt(router.query.episode) + 1,
+                            },
+                          });
+                        }}
+                        endIcon={<ArrowRightAltIcon />}
+                        variant="outlined"
+                      >
+                        next Episode
+                      </Button>
+                    )}
+                  </ButtonGroup>
+                </Box>
               </Box>
-            </Box>
+            </ClickAwayListener>
           ) : null}
         </Box>
       )}

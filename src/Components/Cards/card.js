@@ -17,8 +17,6 @@ export default function card({ data }) {
     setAnchorEl(null);
   };
 
-  console.log(data);
-
   const infoClickhandler = () => {
     router.push(
       {

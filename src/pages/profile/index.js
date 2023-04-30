@@ -88,6 +88,15 @@ export default function Profile() {
 
       <Grid py={2}>
         <Heading title="My Bookmarks" />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography>This Feature is coming soon..</Typography>
+        </Box>
       </Grid>
     </Box>
   );

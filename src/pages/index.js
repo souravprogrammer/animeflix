@@ -50,7 +50,7 @@ function useSearchAnime(keyw, obj) {
     const call = async () => {
       setIsLoading(true);
       try {
-        console.log(process.env.NEXT_PUBLIC_API_URL + "/search");
+        // console.log(process.env.NEXT_PUBLIC_API_URL + "/search");
         const data = await axios.get(
           process.env.NEXT_PUBLIC_API_URL + "/search",
           {

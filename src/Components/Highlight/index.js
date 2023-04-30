@@ -12,7 +12,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 export default function Index({ data }) {
-  console.log(">> ", data);
   return (
     <Box
       sx={{
@@ -141,7 +140,7 @@ export default function Index({ data }) {
             </Button>
           </Box> */}
 
-          <Box
+          {/* <Box
             sx={{
               position: "absolute",
               right: 16,
@@ -171,7 +170,7 @@ export default function Index({ data }) {
             <Button variant="contained" sx={{ color: "#fff" }}>
               Random
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Box>
