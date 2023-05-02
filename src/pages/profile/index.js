@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Pagination } from "@mui/material";
 import { useSession, getSession } from "next-auth/react";
 import Heading from "@/Components/Cards/Heading";
 import axios from "axios";
+import Card from "@/Components/Cards/card";
 
 export default function Profile() {
   const { data: session } = useSession();
-
   const [bookmarks, setBookmarks] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function getBookmarks() {
-      const result = await axios.get("/api/bookmark/get");
-      // console.log(result?.data?.data?.result?.[0]?.list);
+      try {
+        const result = await axios.get("/api/bookmark/get");
+        setBookmarks(result?.data?.data?.result?.[0]?.list ?? []);
+      } catch (err) {
+        // console.log(err.message);
+      }
     }
 
     getBookmarks();
@@ -103,11 +108,29 @@ export default function Profile() {
         <Box
           sx={{
             display: "flex",
+            py: 2,
             alignItems: "center",
-            justifyContent: "center",
+            // justifyContent: "center",
           }}
         >
-          <Typography>This Feature is coming soon..</Typography>
+          {bookmarks?.map((item, i) => (
+            <Card data={item} key={i} disable={true} />
+          ))}
+        </Box>
+        <Box
+          sx={{
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          <Pagination
+            onChange={(e, value) => {
+              setPage(value);
+            }}
+            page={page}
+            count={10}
+            color="primary"
+          />
         </Box>
       </Grid>
     </Box>

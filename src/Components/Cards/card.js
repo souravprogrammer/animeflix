@@ -7,7 +7,7 @@ import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function card({ data }) {
+export default function card({ data, disable }) {
   const [isHover, setIsHover] = useState(false);
   const ref = useRef();
   const id = isHover ? "simple-popoer" : undefined;
@@ -120,7 +120,7 @@ export default function card({ data }) {
         </Typography>
       </Paper>
 
-      {ref.current && (
+      {ref.current && !disable ? (
         <Popper
           id={id}
           onMouseEnter={(e) => {
@@ -196,7 +196,7 @@ export default function card({ data }) {
             </Button>
           </Paper>
         </Popper>
-      )}
+      ) : null}
     </Box>
   );
 }
