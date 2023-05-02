@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Box, Grid, Typography } from "@mui/material";
 import { useSession, getSession } from "next-auth/react";
 import Heading from "@/Components/Cards/Heading";
+import axios from "axios";
 
 export default function Profile() {
   const { data: session } = useSession();
+
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    async function getBookmarks() {
+      const result = await axios.get("/api/bookmark/get");
+      // console.log(result?.data?.data?.result?.[0]?.list);
+    }
+
+    getBookmarks();
+  }, []);
 
   return (
     <Box p={3}>

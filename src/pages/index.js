@@ -85,12 +85,15 @@ export async function getServerSideProps(context) {
     const rand = await axios.get(process.env.API_URL + "/random");
     randomData = rand.data?.data?.list;
   }
+
+  const high =
+    randomData?.[Math.floor(Math.random() * randomData.length)] ?? {};
   return {
     props: {
       data: serachedData,
       popularData: popularData,
       randomData: randomData,
-      highlight: randomData[Math.floor(Math.random() * randomData.length)],
+      highlight: high,
     },
   };
 }

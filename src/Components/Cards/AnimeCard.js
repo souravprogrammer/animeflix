@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Box, Typography, Chip } from "@mui/material";
+import { Box, Typography, Chip, Button, Snackbar } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import MuiAlert from "@mui/material/Alert";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function AnimeCard({ data }) {
+  const [open, setOpen] = useState(false);
+  const [msg, setMessage] = useState(false);
+  const [bookmark, setBookmark] = useState(data?.bookmark?.length > 0);
+  const { data: session } = useSession();
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const snack = (message) => {
+    setMessage(message);
+    setOpen(true);
+  };
+  const AddBookMark = async () => {
+    if (!session) {
+      snack("please sign In");
+      return;
+    }
+    try {
+      if (bookmark) {
+        const res = await axios.get(`/api/bookmark/remove/${data._id}`);
+        snack("Removed");
+        setBookmark(false);
+      } else {
+        const res = await axios.get(`/api/bookmark/update/${data._id}`);
+        snack("Added");
+
+        setBookmark(true);
+      }
+    } catch (err) {
+      snack(err.message);
+    }
+  };
   return (
     <Box
       sx={{
-        height: "40dvh",
+        minHeight: "400px",
         position: "relative",
         background:
           "linear-gradient(180deg, rgba(30,32,35,1) 0%, rgba(0,0,0,0) 100%)",
@@ -26,12 +66,29 @@ export default function AnimeCard({ data }) {
       >
         <Box>
           <Box
-            component={"img"}
-            src={data?.image}
             sx={{
-              height: "250px",
+              display: "flex",
+              flexDirection: "column",
+              // height: "250px",
+              width: "160px",
             }}
-          />
+          >
+            <Box
+              component={"img"}
+              src={data?.image}
+              sx={{
+                height: "250px",
+              }}
+            />
+            <Button
+              onClick={AddBookMark}
+              startIcon={bookmark ? <BookmarkAddedIcon /> : <BookmarkAddIcon />}
+              variant="outlined"
+              sx={{ my: 1 }}
+            >
+              {bookmark ? "Bookmarked" : "Bookmark"}
+            </Button>
+          </Box>
         </Box>
         <Box>
           <Box
@@ -90,6 +147,11 @@ export default function AnimeCard({ data }) {
           </Box>
         </Box>
       </Box>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

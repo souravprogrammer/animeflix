@@ -17,6 +17,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import axios from "axios";
+import { getSession } from "next-auth/react";
 
 export default function Show({ data }) {
   const router = useRouter();
@@ -24,6 +25,8 @@ export default function Show({ data }) {
   const [episodePlayer, setEpisodePlayer] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isOff, setIsOff] = useState(true);
+
+  // console.log(">> ", data);
 
   useEffect(() => {
     if (router.query.episode) {
@@ -303,8 +306,14 @@ function Episode({ data, type, title, onClick }) {
 export async function getServerSideProps(context) {
   const query = context.query;
   try {
+    const session = await getSession(context);
     const data = await axios.get(
-      process.env.API_URL + "/info/" + query.show?.[1]
+      process.env.API_URL + "/info/" + query.show?.[1],
+      {
+        params: {
+          userId: session?.user?.id ?? "",
+        },
+      }
     );
     if (
       data?.data?.data?.length === 0 ||
