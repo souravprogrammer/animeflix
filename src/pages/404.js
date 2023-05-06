@@ -1,7 +1,8 @@
 import React from "react";
 
 import Box from "@mui/material/Box";
-import { Typography, Button } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 export default function Errorpage() {
   return (
@@ -38,7 +39,7 @@ export default function Errorpage() {
             transform: "translateY(-100px)",
           }}
         >
-          Opps, sorry we can't find that page!
+          {" Opps, sorry we can't find that page!"}
         </Typography>
         <Button
           variant="contained"

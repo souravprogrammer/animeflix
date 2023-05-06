@@ -12,7 +12,6 @@ export default async function GetBookMark(req, res, next) {
     const result = await axios.get(
       process.env.API_URL + "/bookmark/" + session.user.id
     );
-    console.log(result);
     res.json({
       data: result.data,
     });

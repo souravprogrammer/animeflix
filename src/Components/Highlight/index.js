@@ -1,17 +1,21 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@mui/material";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
+import { useRouter } from "next/router";
 
 export default function Index({ data }) {
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -21,6 +25,12 @@ export default function Index({ data }) {
         overFlow: "hidden",
         display: "flex",
         alignItems: "center",
+        transform: {
+          xs: "scale(0.8)",
+          sm: "scale(0.9)",
+          md: "scale(0.95)",
+          lg: "scale(1)",
+        },
       }}
     >
       <Box
@@ -59,14 +69,24 @@ export default function Index({ data }) {
           type="video/mp4"
         />
       </Box> */}
-      <Box display={"flex"}>
+      <Box
+        display={"flex"}
+        onClick={() => {
+          router.push("/watch/" + data.title + "/" + data._id);
+        }}
+      >
         <Box
           sx={{
             width: "200px",
             minWidth: "200px",
             maxWidth: "200px",
-
-            // border: "1px solid red",
+            cursor: "pointer",
+            transform: {
+              xs: "scale(0.81)",
+              sm: "scale(0.9)",
+              md: "scale(0.95)",
+              lg: "scale(1)",
+            },
           }}
         >
           <Box
@@ -85,7 +105,13 @@ export default function Index({ data }) {
             p: "16px",
           }}
         >
-          <Typography variant="h4" fontWeight={"bold"}>
+          <Typography
+            variant="h4"
+            fontWeight={"bold"}
+            sx={{
+              cursor: "pointer",
+            }}
+          >
             {data?.title}
           </Typography>
 
@@ -97,6 +123,12 @@ export default function Index({ data }) {
               padding: "8px 0px",
             }}
           >
+            <VisibilityIcon
+              size="small"
+              sx={{ width: "16px", height: "16px" }}
+            />
+
+            <Typography sx={{ px: 1 }}>{data.views}</Typography>
             <StarIcon
               sx={{
                 color: "comps.star",

@@ -1,18 +1,23 @@
 import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
 
-import { Box, Typography, Chip, Button, Snackbar } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import StarIcon from "@mui/icons-material/Star";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import MuiAlert from "@mui/material/Alert";
-import axios from "axios";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function AnimeCard({ data }) {
+function AnimeCard({ data }) {
   const [open, setOpen] = useState(false);
   const [msg, setMessage] = useState(false);
   const [bookmark, setBookmark] = useState(data?.bookmark?.length > 0);
@@ -37,7 +42,6 @@ export default function AnimeCard({ data }) {
       } else {
         const res = await axios.get(`/api/bookmark/update/${data._id}`);
         snack("Added");
-
         setBookmark(true);
       }
     } catch (err) {
@@ -56,19 +60,33 @@ export default function AnimeCard({ data }) {
     >
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: "1fr 4fr",
-          gridTemplateRows: "1fr",
-          gridColumnGap: "0px",
-          gridRowGap: "0px",
+          // display: "grid",
+          // gridTemplateColumns: "1fr 4fr",
+
+          // gridTemplateRows: "1fr",
+          // gridColumnGap: "0px",
+          // gridRowGap: "0px",
+          display: "flex",
+
           padding: "34px",
+          justifyContent: {
+            xs: "center",
+          },
+          alignItems: { xs: "center" },
+          flexDirection: {
+            xs: "column",
+            sm: "row",
+            md: "row",
+            lg: "row",
+          },
         }}
       >
-        <Box>
+        <Box px={2}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
+
               // height: "250px",
               width: "160px",
             }}
@@ -95,6 +113,10 @@ export default function AnimeCard({ data }) {
             sx={{
               display: "flex",
               flexDirection: "column",
+              alignItems: {
+                xs: "center",
+                md: "flex-start",
+              },
             }}
           >
             <Typography variant="h4" fontWeight={"bold"}>
@@ -109,6 +131,12 @@ export default function AnimeCard({ data }) {
                 padding: "1px 0px",
               }}
             >
+              <VisibilityIcon
+                size="small"
+                sx={{ width: "16px", height: "16px" }}
+              />
+
+              <Typography sx={{ px: 1 }}>{data.views}</Typography>
               <StarIcon
                 sx={{
                   color: "comps.star",
@@ -126,8 +154,9 @@ export default function AnimeCard({ data }) {
                     label={m}
                     key={i}
                     size="small"
+                    variant="outlined"
                     color="primary"
-                    sx={{ mx: 1 }}
+                    sx={{ m: 1 }}
                   />
                 );
               })}
@@ -155,3 +184,5 @@ export default function AnimeCard({ data }) {
     </Box>
   );
 }
+
+export default React.memo(AnimeCard);

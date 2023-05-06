@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
-
-import { Box, Grid, Typography, Pagination } from "@mui/material";
+import dynamic from "next/dynamic";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Pagination from "@mui/material/Pagination";
 import { useSession, getSession } from "next-auth/react";
-import Heading from "@/Components/Cards/Heading";
-import axios from "axios";
-import Card from "@/Components/Cards/card";
+const Heading = dynamic(() => import("@/Components/Cards/Heading"));
+const Card = dynamic(() => import("@/Components/Cards/card"));
+const SIZE = 10;
 
 export default function Profile() {
   const { data: session } = useSession();
   const [bookmarks, setBookmarks] = useState([]);
   const [page, setPage] = useState(1);
-
   useEffect(() => {
     async function getBookmarks() {
       try {
-        const result = await axios.get("/api/bookmark/get");
-        setBookmarks(result?.data?.data?.result?.[0]?.list ?? []);
-      } catch (err) {
-        // console.log(err.message);
-      }
+        const result = await fetch("/api/bookmark/get");
+        const res = await result.json();
+        setBookmarks(res?.data?.result?.[0]?.list ?? []);
+      } catch (err) {}
     }
 
     getBookmarks();
@@ -107,13 +108,14 @@ export default function Profile() {
         <Heading title="My Bookmarks" />
         <Box
           sx={{
-            display: "flex",
-            py: 2,
-            alignItems: "center",
-            // justifyContent: "center",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 200px))",
+            gridGap: "8px 8px",
+            justifyContent: "center",
+            alignItems: "baseline",
           }}
         >
-          {bookmarks?.map((item, i) => (
+          {bookmarks?.slice((page - 1) * SIZE, page * SIZE).map((item, i) => (
             <Card data={item} key={i} disable={true} />
           ))}
         </Box>
@@ -128,7 +130,7 @@ export default function Profile() {
               setPage(value);
             }}
             page={page}
-            count={10}
+            count={Math.ceil(bookmarks?.length / 10)}
             color="primary"
           />
         </Box>

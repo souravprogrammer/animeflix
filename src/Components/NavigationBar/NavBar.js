@@ -1,30 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import PopupProfile from "../Profile/PopoupProfile";
+import InputBase from "@mui/material/InputBase";
+import ButtonBase from "@mui/material/ButtonBase";
+import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
 
-import {
-  InputBase,
-  ButtonBase,
-  Button,
-  Grid,
-  Popper,
-  ClickAwayListener,
-  Grow,
-} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/router";
 import { useSession, signIn } from "next-auth/react";
+import dynamic from "next/dynamic";
 
+const User = dynamic(() => import("./User"));
 export default function NavigationBar() {
   const router = useRouter();
   const [search, setSearch] = useState(router.query.search ?? "");
+  const [open, setOpen] = useState(false);
+  const nav = useRef();
 
   const { data: session } = useSession();
 
+  const handlemenu = () => {
+    setOpen((o) => !o);
+  };
+
   useEffect(() => {
-    console.log(session);
-  }, [session]);
+    let resizeObserver = new ResizeObserver(() => {
+      // console.log(nav.current?.offsetWidth);
+      if (nav.current?.offsetWidth >= 900) {
+        setOpen(false);
+      }
+    });
+    // observing the change in width
+    resizeObserver.observe(nav.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   const handleSearch = () => {
     if (!search) {
@@ -44,186 +59,190 @@ export default function NavigationBar() {
     }
   };
   return (
-    <Box
-      sx={{
-        height: "75px",
-        display: "flex",
-        alignItems: "center",
-        padding: "0px 32px",
-        width: "100%",
-        zIndex: 2,
-      }}
-    >
+    <Collapse collapsedSize={75} in={open}>
       <Box
-        width={"100%"}
+        ref={nav}
         sx={{
+          height: "75px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-evenly",
+          padding: "0px 32px",
+          width: "100%",
+          zIndex: 2,
         }}
       >
-        <div
-          style={{
+        <Box
+          width={"100%"}
+          sx={{
             display: "flex",
             alignItems: "center",
-            flex: 1,
+            justifyContent: "space-evenly",
           }}
         >
-          <Typography
-            variant="h4"
-            fontWeight={"bold"}
-            component={"a"}
-            sx={{
-              color: "primary.main",
-              paddingRight: "16px",
-              textDecoration: "none",
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flex: 1,
             }}
-            href="/"
           >
-            Anime
+            <IconButton
+              onClick={handlemenu}
+              sx={{
+                width: "32px",
+                height: "32px",
+                mx: 2,
+              }}
+            >
+              <MenuIcon
+                sx={{
+                  width: "24px",
+                  height: "24px",
+                  m: 2,
+                  display: {
+                    xs: "block",
+                    sm: "block",
+                    md: "none",
+                  },
+                }}
+              />
+            </IconButton>
             <Typography
               variant="h4"
               fontWeight={"bold"}
-              component={"span"}
+              component={"a"}
               sx={{
-                ":hover": {
-                  color: "rgb(145, 145, 145)",
-                },
-                color: "#fff",
+                color: "primary.main",
+                paddingRight: "16px",
+                textDecoration: "none",
               }}
+              href="/"
             >
-              Flix
-            </Typography>
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: "#1e2023",
-              borderRadius: "10px",
-              width: "400px",
-              overflow: "hidden",
-              paddingLeft: "8px",
-            }}
-          >
-            <InputBase
-              placeholder="Search here..."
-              inputProps={{ "aria-label": "search" }}
-              value={search}
-              onKeyDown={(ev) => {
-                if (!(ev.key === "Enter")) return;
-                ev.preventDefault();
-                handleSearch();
-              }}
-              onChange={(e) => setSearch(e.target.value)}
-              sx={{
-                color: "rgb(145, 145, 145)",
-                flex: 1,
-              }}
-            />
-            <ButtonBase
-              onClick={handleSearch}
-              sx={{ p: "8px" }}
-              aria-label="search"
-            >
-              <SearchIcon />
-            </ButtonBase>
-          </Box>
-        </div>
-
-        {session === null ? (
-          <Box>
-            <Button
-              onClick={() => {
-                signIn();
-              }}
-              variant="outlined"
-              size="large"
-              sx={{
-                borderRadius: "20px",
-              }}
-            >
-              Sign In
-            </Button>
-          </Box>
-        ) : (
-          session !== undefined && <User user={session?.user} />
-        )}
-      </Box>
-    </Box>
-  );
-}
-
-const User = ({ user }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Grid alignItems={"center"}>
-        <Button
-          color="error"
-          onClick={(e) => {
-            setAnchorEl(e.currentTarget);
-            setOpen(true);
-          }}
-          sx={{
-            ml: "10px",
-            p: "0px",
-            textTransform: "capitalize",
-            color: "text.normal",
-          }}
-        >
-          <Grid
-            sx={{
-              width: "30px",
-              height: "30px",
-              m: "3px 8px",
-              border: "2px solid",
-              borderColor: "primary.dark",
-              borderRadius: "50%",
-            }}
-          >
-            <>
-              <Grid
-                component={"img"}
-                src={user?.image}
+              Anime
+              <Typography
+                variant="h4"
+                fontWeight={"bold"}
+                component={"span"}
                 sx={{
-                  maxWidth: "26px",
-                  maxHeight: "26px",
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center",
+                  ":hover": {
+                    color: "rgb(145, 145, 145)",
+                  },
+                  color: "#fff",
+                }}
+              >
+                Flix
+              </Typography>
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "#1e2023",
+                borderRadius: "10px",
+                width: "400px",
+                overflow: "hidden",
+                paddingLeft: "8px",
+                position: {
+                  sm: "absolute",
+                  md: "relative",
+                },
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "flex",
+                },
+              }}
+            >
+              <InputBase
+                placeholder="Search here..."
+                inputProps={{ "aria-label": "search" }}
+                value={search}
+                onKeyDown={(ev) => {
+                  if (!(ev.key === "Enter")) return;
+                  ev.preventDefault();
+                  handleSearch();
+                }}
+                onChange={(e) => setSearch(e.target.value)}
+                sx={{
+                  color: "rgb(145, 145, 145)",
+                  flex: 1,
                 }}
               />
-            </>
-          </Grid>
-        </Button>
-      </Grid>
-      <Popper
-        open={open}
-        anchorEl={anchorEl}
-        sx={{ zIndex: 1000 }}
-        placement="bottom-end"
-        disablePortal
-        transition
+              <ButtonBase
+                onClick={handleSearch}
+                sx={{ p: "8px" }}
+                aria-label="search"
+              >
+                <SearchIcon />
+              </ButtonBase>
+            </Box>
+          </div>
+
+          {session === null ? (
+            <Box>
+              <Button
+                onClick={() => {
+                  signIn();
+                }}
+                variant="outlined"
+                size="large"
+                sx={{
+                  borderRadius: "20px",
+                }}
+              >
+                Sign In
+              </Button>
+            </Box>
+          ) : (
+            session !== undefined && <User user={session?.user} />
+          )}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: { sm: "flex", md: "none" },
+          justifyContent: "center",
+          px: 4,
+          py: 2,
+        }}
       >
-        {({ TransitionProps }) => (
-          <ClickAwayListener onClickAway={() => setOpen(false)}>
-            <Grow
-              {...TransitionProps}
-              style={{ transformOrigin: "right 0 0" }}
-              unmountOnExit
-            >
-              <Grid sx={{ mt: "16px", mr: "8px" }}>
-                <PopupProfile setAnchorEl={setOpen} user={user} />
-              </Grid>
-            </Grow>
-          </ClickAwayListener>
-        )}
-      </Popper>
-    </>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#1e2023",
+            borderRadius: "10px",
+            width: { sx: "250px", sm: "400px" },
+            overflow: "hidden",
+            paddingLeft: "8px",
+          }}
+        >
+          <InputBase
+            placeholder="Search here..."
+            inputProps={{ "aria-label": "search" }}
+            value={search}
+            onKeyDown={(ev) => {
+              if (!(ev.key === "Enter")) return;
+              ev.preventDefault();
+              handleSearch();
+            }}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{
+              color: "rgb(145, 145, 145)",
+              flex: 1,
+            }}
+          />
+          <ButtonBase
+            onClick={handleSearch}
+            sx={{ p: "8px" }}
+            aria-label="search"
+          >
+            <SearchIcon />
+          </ButtonBase>
+        </Box>
+      </Box>
+    </Collapse>
   );
-};
+}

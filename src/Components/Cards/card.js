@@ -7,7 +7,7 @@ import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function card({ data, disable }) {
+export default function Card({ data, disable }) {
   const [isHover, setIsHover] = useState(false);
   const ref = useRef();
   const id = isHover ? "simple-popoer" : undefined;
@@ -31,7 +31,13 @@ export default function card({ data, disable }) {
       sx={{
         height: "300px",
         width: "200px",
-        // minWidth: "220px",
+        transform: {
+          xs: "scale(0.88)",
+          sm: "scale(0.9)",
+          md: "scale(0.95)",
+          lg: "scale(1)",
+        },
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
