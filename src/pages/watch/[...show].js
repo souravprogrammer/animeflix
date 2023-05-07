@@ -16,6 +16,7 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import { getSession } from "next-auth/react";
 import axios from "axios";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 
 import Heading from "@/Components/Cards/Heading";
 const AnimeCard = dynamic(() => import("@/Components/Cards/AnimeCard"));
@@ -27,6 +28,19 @@ export default function Show({ data }) {
   const [episodePlayer, setEpisodePlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isOff, setIsOff] = useState(true);
+
+  const { data: session } = useSession();
+  // const [userCookie, setuserCookie] = useCookies(["user"]);
+
+  // useEffect(() => {
+  //   if (session) {
+  //     console.log("this is session ", session.user.id);
+
+  //     setuserCookie("id", session.user.id, { path: "/" });
+  //   } else {
+  //     setuserCookie("id", null, { path: "/" });
+  //   }
+  // }, [session]);
   useEffect(() => {
     if (router.query.episode) {
       startTransition(() => {
@@ -110,18 +124,43 @@ export default function Show({ data }) {
                   >
                     <Box
                       sx={{
-                        position: "sticky",
-                        zIndex: 3,
-                        aspectRatio: "16 / 9",
-                        height: "600px",
+                        position: "relative",
+                        // border: "1px solid red",
+                        overflow: "hidden",
                         width: "80%",
-                        border: "none",
                       }}
-                      sandbox="allow-scripts"
-                      component={"iframe"}
-                      src={episodePlayer?.link}
-                      allow="fullscreen;"
-                    />
+                    >
+                      <Box
+                        sx={{
+                          // position: "sticky",
+                          zIndex: 3,
+                          aspectRatio: "16 / 9",
+                          height: "600px",
+                          width: "100%",
+                          border: "none",
+                        }}
+                        sandbox="allow-scripts"
+                        component={"iframe"}
+                        src={episodePlayer?.link}
+                        allow="fullscreen;"
+                      />
+                      <Box
+                        component={"img"}
+                        src="/Channel.png"
+                        loading="lazy"
+                        allow="autoplay"
+                        sx={{
+                          position: "absolute",
+                          top: 11,
+                          right: 10,
+                          // border: "1px solid red",
+                          width: "200px",
+                          pointerEvents: "none",
+                          transform: "scale(0.9)",
+                        }}
+                      />
+                    </Box>
+
                     <Paper
                       sx={{
                         flex: 1,
@@ -268,12 +307,11 @@ export async function getServerSideProps(context) {
   const query = context.query;
   try {
     const session = await getSession(context);
-
     const dd = await axios.get(
       process.env.API_URL + "/info/" + query.show?.[1],
       {
         params: {
-          userId: session?.user?.id ?? "",
+          userId: session?.user?.id ?? context?.req?.cookies?.id ?? "",
         },
       }
     );

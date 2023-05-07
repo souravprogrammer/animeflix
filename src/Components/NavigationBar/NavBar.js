@@ -12,6 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/router";
 import { useSession, signIn } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { useCookies } from "react-cookie";
 
 const User = dynamic(() => import("./User"));
 export default function NavigationBar() {
@@ -21,6 +22,17 @@ export default function NavigationBar() {
   const nav = useRef();
 
   const { data: session } = useSession();
+
+  const [userCookie, setuserCookie] = useCookies(["user"]);
+
+  useEffect(() => {
+    if (session) {
+      console.log("this is session ", session.user.id);
+      setuserCookie("id", session.user.id, { path: "/" });
+    } else {
+      setuserCookie("id", null, { path: "/" });
+    }
+  }, [session]);
 
   const handlemenu = () => {
     setOpen((o) => !o);

@@ -16,7 +16,6 @@ export default function Card({ data, disable }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const infoClickhandler = () => {
     router.push(
       {
@@ -85,10 +84,8 @@ export default function Card({ data, disable }) {
               transform: isHover ? "scale(1.2)" : "scale(1)",
             }}
             loading="lazy"
-            src={
-              data?.image ??
-              "https://image.tmdb.org/t/p/w500/mU7i4WdnBrtDKJAxU8vl41ej6Ly.jpg"
-            }
+            alt={"no Image"}
+            src={data?.image ?? ""}
           />
 
           <Box
@@ -191,7 +188,16 @@ export default function Card({ data, disable }) {
                 })}
               </Box>
             ) : null}
-            <Typography>{data?.des}</Typography>
+            <Typography
+              sx={{
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 6,
+              }}
+            >
+              {data?.des}
+            </Typography>
 
             <Button
               onClick={infoClickhandler}

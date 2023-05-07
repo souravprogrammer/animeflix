@@ -3,6 +3,9 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+
+import { useCookies } from "react-cookie";
 
 // for dynimic import to reduce load time
 const Highlight = dynamic(() => import("@/Components/Highlight"));
@@ -11,6 +14,19 @@ const Section = dynamic(() => import("@/Components/Section"));
 export default function Home({ data, popularData, randomData, highlight }) {
   const [searchResult, setSearchResult] = useState(data?.data ?? []);
   const router = useRouter();
+  const [userCookie, setuserCookie] = useCookies(["user"]);
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      console.log("this is session ", session.user.id);
+
+      setuserCookie("id", session.user.id, { path: "/" });
+    } else {
+      setuserCookie("id", null, { path: "/" });
+    }
+  }, [session]);
 
   useEffect(() => {
     setSearchResult(data?.data);
@@ -83,9 +99,9 @@ export async function getServerSideProps(context) {
     return {
       props: {
         data: serachedData,
-        popularData: popularData,
-        randomData: randomData,
-        highlight: high,
+        popularData: popularData ?? [],
+        randomData: randomData ?? [],
+        highlight: high ?? {},
       },
     };
   } catch (err) {

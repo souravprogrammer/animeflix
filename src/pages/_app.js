@@ -12,6 +12,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material";
+import { CookiesProvider } from "react-cookie";
 
 export default function App({
   Component,
@@ -29,27 +30,29 @@ export default function App({
       }}
     >
       <SessionProvider session={session}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <>
-            <div
-              style={{
-                maxWidth: "1576px",
-                margin: "auto",
-                display: "flex",
-                flexDirection: "column",
-                minHeight: "100dvh",
-                // border: "1px solid red",
-              }}
-            >
-              <NavigationBar />
-              <Box sx={{ flex: 1 }}>
-                <Component {...pageProps} />
-              </Box>
-              <Footer />
-            </div>
-          </>
-        </ThemeProvider>
+        <CookiesProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <>
+              <div
+                style={{
+                  maxWidth: "1576px",
+                  margin: "auto",
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100dvh",
+                  // border: "1px solid red",
+                }}
+              >
+                <NavigationBar />
+                <Box sx={{ flex: 1 }}>
+                  <Component {...pageProps} />
+                </Box>
+                <Footer />
+              </div>
+            </>
+          </ThemeProvider>
+        </CookiesProvider>
       </SessionProvider>
     </div>
   );

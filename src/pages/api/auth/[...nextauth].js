@@ -11,26 +11,25 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     GithubProvider({
-      clientId: process.env.GIT_CI,
-      clientSecret: process.env.GIT_SECRET,
+      clientId: process.env.NEXTAUTH_GIT_CI,
+      clientSecret: process.env.NEXTAUTH_GIT_SECRET,
     }),
     facebookProvider({
-      clientId: process.env.FACEBOOK_CI,
-      clientSecret: process.env.FACEBOOK_SECRET,
+      clientId: process.env.NEXTAUTH_FACEBOOK_CI,
+      clientSecret: process.env.NEXTAUTH_FACEBOOK_SECRET,
     }),
     DiscordProvider({
-      clientId: process.env.DISCORD_CI,
-      clientSecret: process.env.DISCORD_SECRET,
+      clientId: process.env.NEXTAUTH_DISCORD_CI,
+      clientSecret: process.env.NEXTAUTH_DISCORD_SECRET,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CI,
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.NEXTAUTH_GOOGLE_CI,
+      clientSecret: process.env.NEXTAUTH_GOOGLE_SECRET,
     }),
     TwitterProvider({
-      clientId: process.env.TWITTER_CI,
-      clientSecret: process.env.TWITTER_SECRET,
+      clientId: process.env.NEXTAUTH_TWITTER_CI,
+      clientSecret: process.env.NEXTAUTH_TWITTER_SECRET,
     }),
-
     // ...add more providers here
   ],
   adapter: MongoDBAdapter(MongoDBClient),
@@ -42,5 +41,6 @@ export const authOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 export default NextAuth(authOptions);
