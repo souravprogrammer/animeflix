@@ -20,17 +20,25 @@ export default function Index({ data }) {
     <Box
       sx={{
         position: "relative",
+        // border: "1px solid red",
         // height: "80dvh",
         p: "34px",
         overFlow: "hidden",
         display: "flex",
         alignItems: "center",
-        transform: {
-          xs: "scale(0.8)",
-          sm: "scale(0.9)",
-          md: "scale(0.95)",
-          lg: "scale(1)",
+        overflow: "hidden",
+        minHeight: {
+          xs: "180px",
+          sm: "200px",
+          md: "350px",
+          lg: "400px",
         },
+        // transform: {
+        //   xs: "scale(0.8)",
+        //   sm: "scale(0.9)",
+        //   md: "scale(0.95)",
+        //   lg: "scale(1)",
+        // },
       }}
     >
       <Box
@@ -70,23 +78,55 @@ export default function Index({ data }) {
         />
       </Box> */}
       <Box
-        display={"flex"}
+        sx={{
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "row",
+            lg: "row",
+          },
+          alignItems: {
+            xs: "center",
+            sm: "center",
+            md: "flex-start",
+            lg: "flex-start",
+          },
+        }}
         onClick={() => {
           router.push("/watch/" + data.title + "/" + data._id);
         }}
       >
         <Box
           sx={{
-            width: "200px",
-            minWidth: "200px",
-            maxWidth: "200px",
             cursor: "pointer",
-            transform: {
-              xs: "scale(0.81)",
-              sm: "scale(0.9)",
-              md: "scale(0.95)",
-              lg: "scale(1)",
+            // width: {
+            //   xs: "125px",
+            //   sm: "150px",
+            //   md: "200px",
+            //   lg: "200px",
+            // },
+            height: {
+              xs: "280px",
+              sm: "280px",
+              md: "280px",
+              lg: "330px",
             },
+            aspectRatio: "9 / 16",
+
+            // height: {
+            //   xs: "180px",
+            //   sm: "180px",
+            //   md: "180px",
+            //   lg: "230px",
+            // },
+            // minWidth: {
+            //   xs: "125px",
+            //   sm: "150px",
+            //   md: "200px",
+            //   lg: "200px",
+            // },
+            // border: "1px solid red",
           }}
         >
           <Box
@@ -98,18 +138,35 @@ export default function Index({ data }) {
         </Box>
         <Box
           sx={{
-            // border: "1px solid red",
+            // border: "1px solid green",
             display: "flex",
             flexDirection: "column",
             position: "relative",
-            p: "16px",
+            p: {
+              xs: "0px",
+              sm: "0px",
+              md: "14px",
+              lg: "16px",
+            },
           }}
         >
           <Typography
-            variant="h4"
-            fontWeight={"bold"}
+            // variant="h4"
+            // fontWeight={"bold"}
             sx={{
               cursor: "pointer",
+              typography: {
+                xs: "h6",
+                sm: "h5",
+                md: "h4",
+                lg: "h4",
+              },
+              fontWeight: {
+                xs: "bold",
+                sm: "bold",
+                md: "bold",
+                lg: "bold",
+              },
             }}
           >
             {data?.title}
@@ -134,7 +191,7 @@ export default function Index({ data }) {
                 color: "comps.star",
               }}
             />
-            <Typography fontWeight={"bold"} px={3}>
+            <Typography fontWeight={"bold"} px={1}>
               {data?.rating}
             </Typography>
             <Typography fontWeight={"bold"}>{data?.duration}</Typography>
@@ -147,7 +204,12 @@ export default function Index({ data }) {
               textOverflow: "ellipsis",
               WebkitLineClamp: "4",
               WebkitBoxOrient: "vertical",
-              maxWidth: "70%",
+              maxWidth: { xs: "100%", sm: "100%", md: "70%", lg: "70%" },
+
+              typography: {
+                md: "body1",
+                xs: "body2",
+              },
             }}
           >
             {data?.des}

@@ -28,14 +28,27 @@ export default function Card({ data, disable }) {
   return (
     <Box
       sx={{
-        height: "300px",
-        width: "200px",
-        transform: {
-          xs: "scale(0.88)",
-          sm: "scale(0.9)",
-          md: "scale(0.95)",
-          lg: "scale(1)",
+        // height: "300px",
+        // width: "200px",
+        // border: "1px solid red",
+        width: {
+          xs: "150px",
+          sm: "150px",
+          md: "175px",
+          lg: "200px",
         },
+        // height: {
+        //   xs: "200px",
+        //   sm: "250px",
+        //   md: "250px",
+        //   lg: "300px",
+        // },
+        // transform: {
+        //   xs: "scale(0.88)",
+        //   sm: "scale(0.9)",
+        //   md: "scale(0.95)",
+        //   lg: "scale(1)",
+        // },
 
         display: "flex",
         alignItems: "center",
@@ -62,17 +75,37 @@ export default function Card({ data, disable }) {
           flexDirection: "column",
           transition: "all 0.5s",
           transformOrigin: "center",
-          width: "180px",
+          // width: "180px",
           cursor: "pointer",
-          // border: "1px solid red",
+          // border: "1px solid blue",
+          width: {
+            xs: "145px",
+            sm: "145px",
+            md: "165px",
+            lg: "180px",
+          },
+          // height: {
+          //   xs: "200px",
+          //   sm: "250px",
+          //   md: "250px",
+          //   lg: "300px",
+          // },
         }}
       >
         <Box
           sx={{
-            height: "230px",
+            // height: "230px",
             width: "100%",
             position: "relative",
             overflow: "hidden",
+            aspectRatio: "9 / 16",
+            height: {
+              xs: "180px",
+              sm: "180px",
+              md: "180px",
+              lg: "230px",
+            },
+            // border: "1px solid red",
           }}
         >
           <Box
@@ -110,13 +143,28 @@ export default function Card({ data, disable }) {
         </Box>
 
         <Typography
-          fontWeight={"bold"}
           onClick={infoClickhandler}
           sx={{
-            padding: "8px",
+            margin: "8px",
             ":hover": {
               color: "grey",
             },
+            height: "48px",
+            typography: {
+              sm: "body2",
+              lg: "body1",
+            },
+            fontWeight: {
+              xs: "bold",
+              sm: "bold",
+
+              md: "bold",
+              lg: "bold",
+            },
+            display: "-webkit-box",
+            overflow: "hidden",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
           }}
         >
           {data.title}
