@@ -185,6 +185,12 @@ export default function Card({ data, disable }) {
           placement="right-start"
           sx={{
             maxWidth: "400px",
+            display: {
+              lg: "block",
+              md: "block",
+              sm: "none",
+              xs: "none",
+            },
           }}
         >
           <Paper sx={{ p: 4, display: "flex", flexDirection: "column" }}>
