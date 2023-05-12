@@ -35,7 +35,11 @@ export default function App({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <>
-              <NextNProgress />
+              <NextNProgress
+                color="#1DB954"
+                showOnShallow={true}
+                options={{ easing: "ease", speed: 500, showSpinner: false }}
+              />
               <div
                 style={{
                   maxWidth: "1576px",
@@ -46,10 +50,7 @@ export default function App({
                   // border: "1px solid red",
                 }}
               >
-                <NavigationBar
-                  showOnShallow={true}
-                  options={{ easing: "ease", speed: 500 }}
-                />
+                <NavigationBar />
                 <Box sx={{ flex: 1 }}>
                   <Component {...pageProps} />
                 </Box>
