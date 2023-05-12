@@ -24,6 +24,7 @@ export default function Footer() {
         }}
       >
         <Typography
+          variant="body2"
           sx={{
             borderRight: "1px solid #fff",
             px: "16px",
@@ -33,6 +34,7 @@ export default function Footer() {
           DMCA
         </Typography>
         <Typography
+          variant="body2"
           sx={{
             borderRight: "1px solid #fff",
             px: "16px",
@@ -43,6 +45,7 @@ export default function Footer() {
           Privacy Poilcy
         </Typography>
         <Typography
+          variant="body2"
           sx={{
             borderRight: "1px solid #fff",
             px: "16px",
@@ -51,23 +54,33 @@ export default function Footer() {
         >
           Cookies Poilcy
         </Typography>
-        <Typography sx={{ px: "16px", ":hover": { color: "primary.main" } }}>
+        <Typography
+          variant="body2"
+          sx={{ px: "16px", ":hover": { color: "primary.main" } }}
+        >
           Credit
         </Typography>
       </Box>
 
       <Box
         sx={{
-          padding: "16px",
+          padding: {
+            lg: "16px",
+            md: "16px",
+            sm: "4px",
+            xs: "4px",
+          },
           textAlign: "center",
         }}
       >
         <Typography
+          variant="body2"
           sx={{
             opacity: "0.6",
           }}
         >
           <Typography
+            variant="body2"
             component={"span"}
             sx={{
               px: "8px",

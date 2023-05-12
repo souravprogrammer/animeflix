@@ -4,6 +4,7 @@ import Footer from "@/Components/Footer";
 import { getDesignTheme } from "@/Components/theme/getDesignTheme";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
+import NextNProgress from "nextjs-progressbar";
 
 import {
   Box,
@@ -34,6 +35,7 @@ export default function App({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <>
+              <NextNProgress />
               <div
                 style={{
                   maxWidth: "1576px",
@@ -44,7 +46,10 @@ export default function App({
                   // border: "1px solid red",
                 }}
               >
-                <NavigationBar />
+                <NavigationBar
+                  showOnShallow={true}
+                  options={{ easing: "ease", speed: 500 }}
+                />
                 <Box sx={{ flex: 1 }}>
                   <Component {...pageProps} />
                 </Box>

@@ -77,6 +77,7 @@ export default function Show({ data }) {
       <Box
         sx={{
           margin: "auto",
+          // border: "1px solid red",
         }}
       >
         <Box
@@ -120,22 +121,38 @@ export default function Show({ data }) {
                       display: "flex",
                       justifyContent: "center",
                       margin: "16px",
+
+                      flexDirection: {
+                        lg: "row",
+                        md: "row",
+                        sm: "column",
+                        xs: "column",
+                      },
                     }}
                   >
                     <Box
                       sx={{
                         position: "relative",
-                        // border: "1px solid red",
                         overflow: "hidden",
-                        width: "80%",
+                        width: {
+                          lg: "80%",
+                          md: "80%",
+                          sm: "100%",
+                          xs: "100%",
+                        },
                       }}
                     >
                       <Box
                         sx={{
-                          // position: "sticky",
+                          position: "sticky",
                           zIndex: 3,
                           aspectRatio: "16 / 9",
-                          height: "600px",
+                          height: {
+                            lg: "600px",
+                            md: "550px",
+                            sm: "300px",
+                            xs: "300px",
+                          },
                           width: "100%",
                           border: "none",
                         }}
@@ -186,15 +203,26 @@ export default function Show({ data }) {
                       >
                         <ButtonBase
                           sx={{
-                            height: "50px",
+                            height: {
+                              lg: "50px",
+                              md: "50px",
+                              sm: "30px",
+                              xs: "30px",
+                            },
+
                             display: "flex",
                             justifyContent: "flex-start",
-                            px: "16px",
+                            px: {
+                              lg: "16px",
+                              md: "16px",
+                              sm: "8px",
+                              xs: "8px",
+                            },
                             borderRight: "5px solid",
                             borderColor: "primary.main",
                           }}
                         >
-                          <Typography>VidStream</Typography>
+                          <Typography variant="body2">VidStream</Typography>
                         </ButtonBase>
                       </Box>
                     </Paper>
@@ -281,6 +309,8 @@ export default function Show({ data }) {
                 <Episode
                   onClick={() => {
                     setIsLoading(true);
+                    window.scrollTo(0, 0);
+
                     router.push(
                       {
                         pathname: `/watch/${router.query.show[0]}/${router.query.show[1]}`,

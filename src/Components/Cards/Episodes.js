@@ -34,7 +34,19 @@ function Episode({ data, type, title, onClick }) {
           }}
         >
           {
-            <Typography textAlign={"left"} color={"primary"} pl={2}>
+            <Typography
+              textAlign={"left"}
+              color={"primary"}
+              pl={2}
+              sx={{
+                typography: {
+                  lg: "body1",
+                  md: "body1",
+                  sm: "body2",
+                  xs: "body2",
+                },
+              }}
+            >
               {data?.title ? (
                 <>
                   {data?.episodeNumber} {data?.title}

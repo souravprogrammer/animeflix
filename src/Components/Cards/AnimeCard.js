@@ -56,6 +56,7 @@ function AnimeCard({ data }) {
         background:
           "linear-gradient(180deg, rgba(30,32,35,1) 0%, rgba(0,0,0,0) 100%)",
         borderRadius: "5px",
+        // border: "1px solid red",
       }}
     >
       <Box
@@ -116,10 +117,27 @@ function AnimeCard({ data }) {
               alignItems: {
                 xs: "center",
                 md: "flex-start",
+                sm: "flex-start",
               },
             }}
           >
-            <Typography variant="h4" fontWeight={"bold"}>
+            <Typography
+              variant="h4"
+              sx={{
+                typography: {
+                  lg: "h4",
+                  md: "h5",
+                  sm: "body1",
+                  xs: "body1",
+                },
+                fontWeight: {
+                  lg: "bold",
+                  md: "bold",
+                  sm: "bold",
+                  xs: "bold",
+                },
+              }}
+            >
               {data?.title}
             </Typography>
 
@@ -136,16 +154,58 @@ function AnimeCard({ data }) {
                 sx={{ width: "16px", height: "16px" }}
               />
 
-              <Typography sx={{ px: 1 }}>{data.views}</Typography>
+              <Typography
+                sx={{
+                  px: 1,
+
+                  typography: {
+                    lg: "body1",
+                    md: "body1",
+                    sm: "body2",
+                    xs: "body2",
+                  },
+                }}
+              >
+                {data.views}
+              </Typography>
               <StarIcon
                 sx={{
                   color: "comps.star",
+                  width: {
+                    lg: "20px",
+                    md: "18px",
+                    sm: "18px",
+                    xs: "18px",
+                  },
                 }}
               />
-              <Typography fontWeight={"bold"} px={2}>
+              <Typography
+                // fontWeight={"bold"}
+                px={2}
+                sx={{
+                  typography: {
+                    lg: "body1",
+                    md: "body1",
+                    sm: "body2",
+                    xs: "body2",
+                  },
+                }}
+              >
                 {data?.rating}
               </Typography>
-              <Typography fontWeight={"bold"}>{data?.duration}</Typography>
+              <Typography
+                fontWeight={"bold"}
+                sx={{
+                  typography: {
+                    lg: "body1",
+                    md: "body1",
+                    sm: "body2",
+                    xs: "body2",
+                  },
+                }}
+              >
+                {data?.duration}
+              </Typography>
             </div>
             <Box py={2}>
               {data?.genres?.map((m, i) => {
@@ -169,6 +229,12 @@ function AnimeCard({ data }) {
                 WebkitLineClamp: "6",
                 WebkitBoxOrient: "vertical",
                 maxWidth: "70%",
+                typography: {
+                  lg: "body1",
+                  md: "body1",
+                  sm: "body2",
+                  xs: "body2",
+                },
               }}
             >
               {data?.description}
