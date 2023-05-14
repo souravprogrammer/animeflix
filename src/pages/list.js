@@ -4,7 +4,7 @@ import divideAlpha from "@/Utils/DivideAlpha";
 import Episodes from "@/Components/Cards/Episodes";
 import Typography from "@mui/material/Typography";
 
-export default function list({ data = [] }) {
+export default function List({ data = [] }) {
   const [list, setList] = useState({});
   useEffect(() => {
     if (data.length > 0) setList(divideAlpha(data));
