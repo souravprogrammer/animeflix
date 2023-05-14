@@ -70,6 +70,9 @@ export default function NavigationBar() {
       setSearch("");
     }
   };
+  const HandleNavigate = () => {
+    router.push("/list");
+  };
   return (
     <Collapse collapsedSize={75} in={open}>
       <Box
@@ -189,6 +192,42 @@ export default function NavigationBar() {
                 <SearchIcon />
               </ButtonBase>
             </Box>
+            <Box
+              sx={{
+                // border: "1px solid red",
+                display: { xs: "none", md: "grid", lg: "grid" },
+                placeItems: "center",
+              }}
+            >
+              <Typography
+                onClick={HandleNavigate}
+                sx={{
+                  margin: "8px",
+                  ":hover": {
+                    color: "grey",
+                  },
+                  px: "26px",
+
+                  typography: {
+                    sm: "body2",
+                    lg: "body1",
+                  },
+                  fontWeight: {
+                    xs: "bold",
+                    sm: "bold",
+
+                    md: "bold",
+                    lg: "bold",
+                  },
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                }}
+              >
+                Anime List
+              </Typography>
+            </Box>
           </div>
 
           {session === null ? (
@@ -215,11 +254,49 @@ export default function NavigationBar() {
       <Box
         sx={{
           display: { sm: "flex", md: "none" },
+          flexDirection: "column",
           justifyContent: "center",
+          alignItems: "center",
           px: 4,
           py: 2,
         }}
       >
+        <Box
+          sx={{
+            display: { xs: "grid", sm: "grid", md: "none" },
+            placeItems: "center",
+            padding: "8px",
+          }}
+        >
+          <Typography
+            onClick={HandleNavigate}
+            sx={{
+              margin: "8px",
+              ":hover": {
+                color: "grey",
+              },
+              px: "34px",
+
+              typography: {
+                sm: "body2",
+                lg: "body1",
+              },
+              fontWeight: {
+                xs: "bold",
+                sm: "bold",
+
+                md: "bold",
+                lg: "bold",
+              },
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+            }}
+          >
+            Anime List
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",

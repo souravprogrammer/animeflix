@@ -3,12 +3,12 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import LaptopIcon from "@mui/icons-material/Laptop";
 
-function Episode({ data, type, title, onClick }) {
+function Episode({ data, type, title, onClick, mode }) {
   return (
     <ButtonBase
       onClick={onClick}
       sx={{
-        px: "16px",
+        px: mode === 1 ? "8px" : "16px",
         ":hover": {
           backgroundColor: "#1e2023",
         },
@@ -21,9 +21,9 @@ function Episode({ data, type, title, onClick }) {
           alignItems: "center",
           width: "100%",
           padding: {
-            xs: "10px",
-            sm: "10px",
-            md: "px",
+            xs: mode === 1 ? "5px" : "10px",
+            sm: mode === 1 ? "5px" : "10px",
+            md: "0px",
             lg: "0px",
           },
         }}
@@ -52,7 +52,7 @@ function Episode({ data, type, title, onClick }) {
                   {data?.episodeNumber} {data?.title}
                 </>
               ) : (
-                <>{`${title} (${type})`}</>
+                <>{`${title} ${type ? `(${type})` : ""}`}</>
               )}
             </Typography>
           }
@@ -61,8 +61,8 @@ function Episode({ data, type, title, onClick }) {
           sx={{
             display: {
               xs: "none",
-              md: "block",
-              lg: "block",
+              md: mode === 1 ? "none" : "block",
+              lg: mode === 1 ? "none" : "block",
             },
           }}
         >
