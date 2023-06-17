@@ -166,7 +166,7 @@ function AnimeCard({ data }) {
                   },
                 }}
               >
-                {data.views}
+                {parseInt(data.views)}
               </Typography>
               <StarIcon
                 sx={{

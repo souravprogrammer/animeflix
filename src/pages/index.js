@@ -83,14 +83,15 @@ export async function getServerSideProps(context) {
       );
       serachedData = await res.json();
     } else {
-      const data = await fetch(process.env.API_URL + "/popular");
+      const x = await fetch(process.env.API_URL + "/popular");
+      const a = await fetch(process.env.API_URL + "/random");
+
+      const [data, r] = await Promise.all([x, a]);
+
       const d = await data.json();
-
-      popularData = d?.data?.list;
-
-      const r = await fetch(process.env.API_URL + "/random");
       const rand = await r.json();
 
+      popularData = d?.data?.list;
       randomData = rand?.data?.list;
     }
 

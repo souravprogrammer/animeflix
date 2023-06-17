@@ -185,7 +185,7 @@ export default function Index({ data }) {
               sx={{ width: "16px", height: "16px" }}
             />
 
-            <Typography sx={{ px: 1 }}>{data.views}</Typography>
+            <Typography sx={{ px: 1 }}>{parseInt(data.views)}</Typography>
             <StarIcon
               sx={{
                 color: "comps.star",
