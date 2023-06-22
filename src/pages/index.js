@@ -10,18 +10,31 @@ import { useCookies } from "react-cookie";
 // for dynimic import to reduce load time
 const Highlight = dynamic(() => import("@/Components/Highlight"));
 const Section = dynamic(() => import("@/Components/Section"));
+import Call from "@/Utils/Call";
 
-export default function Home({ data, popularData, randomData, highlight }) {
+export default function Home({ data }) {
   const [searchResult, setSearchResult] = useState(data?.data ?? []);
   const router = useRouter();
   const [userCookie, setuserCookie] = useCookies(["user"]);
-
+  const [popularData, setPopularData] = useState([]);
+  const [randomData, setRandomData] = useState([]);
+  const [highlight, setHighlight] = useState({});
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session) {
-      console.log("this is session ", session.user.id);
+    Call(process.env.NEXT_PUBLIC_API_URL + "/popular").then((res) => {
+      setPopularData(res?.data?.list);
+    });
+    Call(process.env.NEXT_PUBLIC_API_URL + "/random").then((res) => {
+      const rand = res?.data?.list;
+      const high = rand?.[Math.floor(Math.random() * randomData.length)] ?? {};
+      setHighlight(high);
+      setRandomData(rand);
+    });
+  }, []);
 
+  useEffect(() => {
+    if (session) {
       setuserCookie("id", session.user.id, { path: "/" });
     } else {
       setuserCookie("id", null, { path: "/" });
@@ -73,8 +86,8 @@ export default function Home({ data, popularData, randomData, highlight }) {
 
 export async function getServerSideProps(context) {
   let serachedData = [];
-  let popularData = [];
-  let randomData = [];
+  // let popularData = [];
+  // let randomData = [];
 
   try {
     if (context.query.search) {
@@ -82,27 +95,27 @@ export async function getServerSideProps(context) {
         process.env.API_URL + `/search?keyw=${context.query.search}`
       );
       serachedData = await res.json();
-    } else {
-      const x = await fetch(process.env.API_URL + "/popular");
-      const a = await fetch(process.env.API_URL + "/random");
-
-      const [data, r] = await Promise.all([x, a]);
-
-      const d = await data.json();
-      const rand = await r.json();
-
-      popularData = d?.data?.list;
-      randomData = rand?.data?.list;
     }
+    //  else {
+    //   const x = await fetch(process.env.API_URL + "/popular");
+    //   const a = await fetch(process.env.API_URL + "/random");
 
-    const high =
-      randomData?.[Math.floor(Math.random() * randomData.length)] ?? {};
+    //   const [data, r] = await Promise.all([x, a]);
+
+    //   const d = await data.json();
+    //   const rand = await r.json();
+
+    //   popularData = d?.data?.list;
+    //   randomData = rand?.data?.list;
+    // }
+
+    // const high = randomData?.[Math.floor(Math.random() * randomData.length)] ?? {};
     return {
       props: {
         data: serachedData,
-        popularData: popularData ?? [],
-        randomData: randomData ?? [],
-        highlight: high ?? {},
+        // popularData: popularData ?? [],
+        // randomData: randomData ?? [],
+        // highlight: high ?? {},
       },
     };
   } catch (err) {
