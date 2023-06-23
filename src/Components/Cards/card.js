@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Typography, Button, Chip, Paper, Box, Popper } from "@mui/material";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StarIcon from "@mui/icons-material/Star";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import InfoIcon from "@mui/icons-material/Info";
+import Image from "next/image";
 
 export default function Card({ data, disable }) {
   const [isHover, setIsHover] = useState(false);

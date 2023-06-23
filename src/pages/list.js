@@ -3,9 +3,11 @@ import Box from "@mui/material/Box";
 import divideAlpha from "@/Utils/DivideAlpha";
 import Episodes from "@/Components/Cards/Episodes";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/router";
 
 export default function List({ data = [] }) {
   const [list, setList] = useState({});
+  const router = useRouter();
   useEffect(() => {
     if (data.length > 0) setList(divideAlpha(data));
   }, [data]);
@@ -17,14 +19,16 @@ export default function List({ data = [] }) {
       }}
     >
       {Object.keys(list).map((frag, i) => {
-        return <ListShow key={i} heading={frag} list={list[frag]} />;
+        return (
+          <ListShow router={router} key={i} heading={frag} list={list[frag]} />
+        );
         // return <></>;
       })}
     </Box>
   );
 }
 
-function ListShow({ heading, list }) {
+function ListShow({ heading, list, router }) {
   return (
     <Box display={"flex"} flexDirection={"column"}>
       <Typography
@@ -37,7 +41,16 @@ function ListShow({ heading, list }) {
       </Typography>
 
       {list?.map((li, i) => {
-        return <Episodes key={i} title={li.title} mode={1} />;
+        return (
+          <Episodes
+            onClick={() => {
+              router.push("/watch/" + li.title + "/" + li._id);
+            }}
+            key={i}
+            title={li.title}
+            mode={1}
+          />
+        );
       })}
     </Box>
   );

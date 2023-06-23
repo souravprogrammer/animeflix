@@ -66,16 +66,19 @@ function Episode({ data, type, title, onClick, mode }) {
             },
           }}
         >
-          <Box
-            component={"img"}
-            py={1}
-            loading="lazy"
-            sx={{
-              aspectRatio: "16 / 9",
-              width: "100px",
-            }}
-            src={data?.img}
-          />
+          {data?.img ? (
+            <Box
+              component={"img"}
+              py={1}
+              loading="lazy"
+              sx={{
+                aspectRatio: "16 / 9",
+                width: "100px",
+              }}
+              src={data?.img}
+              alt={"no Image"}
+            />
+          ) : null}
         </Box>
       </Box>
     </ButtonBase>

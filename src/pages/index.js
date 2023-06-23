@@ -12,25 +12,57 @@ const Highlight = dynamic(() => import("@/Components/Highlight"));
 const Section = dynamic(() => import("@/Components/Section"));
 import Call from "@/Utils/Call";
 
+const Keys = {
+  popular: "POPULAR",
+  random: "RANDOM",
+  high: "HIGH",
+};
+
 export default function Home({ data }) {
   const [searchResult, setSearchResult] = useState(data?.data ?? []);
   const router = useRouter();
   const [userCookie, setuserCookie] = useCookies(["user"]);
+
+  const [isLoadingPopular, setIsLoadingPopular] = useState(true);
+  const [isLoadingRandom, setIsLoadingRandom] = useState(true);
+  const [isLoadingHigh, setIsLoadingHigh] = useState(true);
+
   const [popularData, setPopularData] = useState([]);
   const [randomData, setRandomData] = useState([]);
   const [highlight, setHighlight] = useState({});
   const { data: session } = useSession();
 
   useEffect(() => {
-    Call(process.env.NEXT_PUBLIC_API_URL + "/popular").then((res) => {
-      setPopularData(res?.data?.list);
-    });
-    Call(process.env.NEXT_PUBLIC_API_URL + "/random").then((res) => {
-      const rand = res?.data?.list;
-      const high = rand?.[Math.floor(Math.random() * randomData.length)] ?? {};
-      setHighlight(high);
-      setRandomData(rand);
-    });
+    if (sessionStorage.getItem(Keys.popular)) {
+      setPopularData(
+        JSON.parse(sessionStorage.getItem(Keys.popular)).data?.list
+      );
+      setIsLoadingPopular(false);
+    } else {
+      Call(process.env.NEXT_PUBLIC_API_URL + "/popular").then((res) => {
+        setPopularData(res?.data?.list);
+        setIsLoadingPopular(false);
+        sessionStorage.setItem(Keys.popular, JSON.stringify(res));
+      });
+    }
+    if (sessionStorage.getItem(Keys.random)) {
+      setRandomData(JSON.parse(sessionStorage.getItem(Keys.random)));
+      setHighlight(JSON.parse(sessionStorage.getItem(Keys.high)));
+      setIsLoadingRandom(false);
+      setIsLoadingHigh(false);
+    } else {
+      Call(process.env.NEXT_PUBLIC_API_URL + "/random").then((res) => {
+        const rand = res?.data?.list;
+        const high =
+          rand?.[Math.floor(Math.random() * randomData.length)] ?? {};
+        setHighlight(high);
+        setRandomData(rand);
+        setIsLoadingRandom(false);
+        setIsLoadingHigh(false);
+        sessionStorage.setItem(Keys.random, JSON.stringify(rand));
+        sessionStorage.setItem(Keys.high, JSON.stringify(high));
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -74,9 +106,17 @@ export default function Home({ data }) {
           </Box>
         ) : (
           <>
-            <Highlight data={highlight} />
-            <Section title={"Most Popular"} list={popularData ?? []} />
-            <Section title={"recommended"} list={randomData ?? []} />
+            <Highlight data={highlight} isLoading={isLoadingHigh} />
+            <Section
+              title={"Most Popular"}
+              list={popularData ?? []}
+              isLoading={isLoadingPopular}
+            />
+            <Section
+              title={"recommended"}
+              list={randomData ?? []}
+              isLoading={isLoadingRandom}
+            />
           </>
         )}
       </Box>

@@ -71,6 +71,7 @@ export default function Profile() {
                     objectFit: "cover",
                     objectPosition: "center",
                   }}
+                  alt="user Profile Image"
                 />
               </Grid>
               <Grid

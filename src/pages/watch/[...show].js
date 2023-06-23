@@ -161,21 +161,6 @@ export default function Show({ data }) {
                         src={episodePlayer?.link}
                         allow="fullscreen;"
                       />
-                      <Box
-                        component={"img"}
-                        src="/Channel.png"
-                        loading="lazy"
-                        allow="autoplay"
-                        sx={{
-                          position: "absolute",
-                          top: 11,
-                          right: 10,
-                          // border: "1px solid red",
-                          width: "200px",
-                          pointerEvents: "none",
-                          transform: "scale(0.9)",
-                        }}
-                      />
                     </Box>
 
                     <Paper

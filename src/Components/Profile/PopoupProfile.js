@@ -48,6 +48,7 @@ function PopupProfile({ user }) {
                 objectFit: "cover",
                 objectPosition: "center",
               }}
+              alt="user Image"
             />
           </Grid>
           <Grid

@@ -21,7 +21,7 @@ export default function Errorpage() {
           justifyContent: "center",
         }}
       >
-        <Box component={"img"} src="/error.png" />
+        <Box component={"img"} src="/error.png" alt={"error Image"} />
 
         <Typography
           //   variant="h1"

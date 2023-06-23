@@ -27,7 +27,7 @@ export default function NavigationBar() {
 
   useEffect(() => {
     if (session) {
-      console.log("this is session ", session.user.id);
+      // console.log("this is session ", session.user.id);
       setuserCookie("id", session.user.id, { path: "/" });
     } else {
       setuserCookie("id", null, { path: "/" });
@@ -131,7 +131,9 @@ export default function NavigationBar() {
                 paddingRight: "16px",
                 textDecoration: "none",
               }}
-              href="/"
+              onClick={() => {
+                router.push("/");
+              }}
             >
               Anime
               <Typography

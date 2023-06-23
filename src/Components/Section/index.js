@@ -3,8 +3,9 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import Heading from "@/Components/Cards/Heading";
 import Card from "@/Components/Cards/card";
+import Skeleton from "@mui/material/Skeleton";
 
-export default function index({ title, list = [], type, result }) {
+export default function index({ title, list = [], type, result, isLoading }) {
   return (
     <Box>
       <Heading title={title} />
@@ -43,9 +44,32 @@ export default function index({ title, list = [], type, result }) {
           alignItems: "baseline",
         }}
       >
-        {list?.map((item, i) => {
-          return <Card key={i} data={item} />;
-        })}
+        {isLoading
+          ? [1, 2, 3, 4, 5, 6, 7].map((item) => {
+              return (
+                <Skeleton
+                  key={item}
+                  variant="rectangular"
+                  sx={{
+                    width: {
+                      xs: "150px",
+                      sm: "150px",
+                      md: "175px",
+                      lg: "200px",
+                    },
+                    height: {
+                      xs: "200px",
+                      sm: "250px",
+                      md: "250px",
+                      lg: "300px",
+                    },
+                  }}
+                />
+              );
+            })
+          : list?.map((item, i) => {
+              return <Card key={i} data={item} />;
+            })}
       </Box>
     </Box>
   );

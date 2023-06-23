@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Skeleton from "@mui/material/Skeleton";
 
 import StarIcon from "@mui/icons-material/Star";
 import InfoIcon from "@mui/icons-material/Info";
@@ -14,7 +15,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { useRouter } from "next/router";
 
-export default function Index({ data }) {
+export default function Index({ data, isLoading }) {
   const router = useRouter();
   return (
     <Box
@@ -33,6 +34,7 @@ export default function Index({ data }) {
           md: "350px",
           lg: "400px",
         },
+
         // transform: {
         //   xs: "scale(0.8)",
         //   sm: "scale(0.9)",
@@ -41,21 +43,23 @@ export default function Index({ data }) {
         // },
       }}
     >
-      <Box
-        sx={{
-          filter: " blur(4px)",
-          backgroundImage: `linear-gradient(rgba(17, 17, 17, 0.901),rgb(17, 17, 17)), url(${data?.image})`,
-          backgroundPosition: "top",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          zIndex: -1,
-        }}
-      />
+      {isLoading ? null : (
+        <Box
+          sx={{
+            filter: " blur(4px)",
+            backgroundImage: `linear-gradient(rgba(17, 17, 17, 0.901),rgb(17, 17, 17)), url(${data?.image})`,
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        />
+      )}
       {/* <Box
         sx={{
           position: "absolute",
@@ -92,129 +96,179 @@ export default function Index({ data }) {
             md: "flex-start",
             lg: "flex-start",
           },
+          width: "100%",
         }}
         onClick={() => {
           router.push("/watch/" + data.title + "/" + data._id);
         }}
       >
-        <Box
-          sx={{
-            cursor: "pointer",
-            // width: {
-            //   xs: "125px",
-            //   sm: "150px",
-            //   md: "200px",
-            //   lg: "200px",
-            // },
-            height: {
-              xs: "280px",
-              sm: "280px",
-              md: "280px",
-              lg: "330px",
-            },
-            aspectRatio: "9 / 16",
-
-            // height: {
-            //   xs: "180px",
-            //   sm: "180px",
-            //   md: "180px",
-            //   lg: "230px",
-            // },
-            // minWidth: {
-            //   xs: "125px",
-            //   sm: "150px",
-            //   md: "200px",
-            //   lg: "200px",
-            // },
-            // border: "1px solid red",
-          }}
-        >
-          <Box
-            component={"img"}
-            loading="lazy"
-            src={data?.image}
-            width="100%"
+        {isLoading ? (
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              // width: {
+              //   xs: "150px",
+              //   sm: "150px",
+              //   md: "200px",
+              //   lg: "200px",
+              // },
+              height: {
+                xs: "280px",
+                sm: "280px",
+                md: "280px",
+                lg: "330px",
+              },
+              aspectRatio: "9 / 16",
+            }}
           />
-        </Box>
-        <Box
-          sx={{
-            // border: "1px solid green",
-            display: "flex",
-            flexDirection: "column",
-            position: "relative",
-            p: {
-              xs: "0px",
-              sm: "0px",
-              md: "14px",
-              lg: "16px",
-            },
-          }}
-        >
-          <Typography
-            // variant="h4"
-            // fontWeight={"bold"}
+        ) : (
+          <Box
             sx={{
               cursor: "pointer",
-              typography: {
-                xs: "h6",
-                sm: "h5",
-                md: "h4",
-                lg: "h4",
+              // width: {
+              //   xs: "125px",
+              //   sm: "150px",
+              //   md: "200px",
+              //   lg: "200px",
+              // },
+              height: {
+                xs: "280px",
+                sm: "280px",
+                md: "280px",
+                lg: "330px",
               },
-              fontWeight: {
-                xs: "bold",
-                sm: "bold",
-                md: "bold",
-                lg: "bold",
-              },
-            }}
-          >
-            {data?.title}
-          </Typography>
+              aspectRatio: "9 / 16",
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
+              // height: {
+              //   xs: "180px",
+              //   sm: "180px",
+              //   md: "180px",
+              //   lg: "230px",
+              // },
+              // minWidth: {
+              //   xs: "125px",
+              //   sm: "150px",
+              //   md: "200px",
+              //   lg: "200px",
+              // },
               // border: "1px solid red",
-              padding: "8px 0px",
             }}
           >
-            <VisibilityIcon
-              size="small"
-              sx={{ width: "16px", height: "16px" }}
+            <Box
+              component={"img"}
+              loading="lazy"
+              src={data?.image}
+              width="100%"
+              alt={data?.title ?? ""}
             />
+          </Box>
+        )}
 
-            <Typography sx={{ px: 1 }}>{parseInt(data.views)}</Typography>
-            <StarIcon
+        {isLoading ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              p: {
+                xs: "0px",
+                sm: "0px",
+                md: "14px",
+                lg: "16px",
+              },
+            }}
+          >
+            <Skeleton
               sx={{
-                color: "comps.star",
+                width: "250px",
               }}
             />
-            <Typography fontWeight={"bold"} px={1}>
-              {data?.rating}
-            </Typography>
-            <Typography fontWeight={"bold"}>{data?.duration}</Typography>
-          </div>
-
-          <Typography
+            <Skeleton width={"150px"} />
+            <Skeleton width={"250px"} />
+            <Skeleton width={"250px"} />
+            <Skeleton width={"250px"} />
+            <Skeleton width={"100px"} />
+          </Box>
+        ) : (
+          <Box
             sx={{
-              display: "-webkit-box",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              WebkitLineClamp: "4",
-              WebkitBoxOrient: "vertical",
-              maxWidth: { xs: "100%", sm: "100%", md: "70%", lg: "70%" },
-
-              typography: {
-                md: "body1",
-                xs: "body2",
+              // border: "1px solid green",
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              p: {
+                xs: "0px",
+                sm: "0px",
+                md: "14px",
+                lg: "16px",
               },
             }}
           >
-            {data?.des}
-          </Typography>
-          {/* <Box
+            <Typography
+              // variant="h4"
+              // fontWeight={"bold"}
+              sx={{
+                cursor: "pointer",
+                typography: {
+                  xs: "h6",
+                  sm: "h5",
+                  md: "h4",
+                  lg: "h4",
+                },
+                fontWeight: {
+                  xs: "bold",
+                  sm: "bold",
+                  md: "bold",
+                  lg: "bold",
+                },
+              }}
+            >
+              {data?.title}
+            </Typography>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                // border: "1px solid red",
+                padding: "8px 0px",
+              }}
+            >
+              <VisibilityIcon
+                size="small"
+                sx={{ width: "16px", height: "16px" }}
+              />
+
+              <Typography sx={{ px: 1 }}>{parseInt(data.views)}</Typography>
+              <StarIcon
+                sx={{
+                  color: "comps.star",
+                }}
+              />
+              <Typography fontWeight={"bold"} px={1}>
+                {data?.rating}
+              </Typography>
+              <Typography fontWeight={"bold"}>{data?.duration}</Typography>
+            </div>
+
+            <Typography
+              sx={{
+                display: "-webkit-box",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                WebkitLineClamp: "4",
+                WebkitBoxOrient: "vertical",
+                maxWidth: { xs: "100%", sm: "100%", md: "70%", lg: "70%" },
+
+                typography: {
+                  md: "body1",
+                  xs: "body2",
+                },
+              }}
+            >
+              {data?.des}
+            </Typography>
+            {/* <Box
             sx={{
               padding: "16px 0px",
             }}
@@ -234,7 +288,7 @@ export default function Index({ data }) {
             </Button>
           </Box> */}
 
-          {/* <Box
+            {/* <Box
             sx={{
               position: "absolute",
               right: 16,
@@ -265,7 +319,8 @@ export default function Index({ data }) {
               Random
             </Button>
           </Box> */}
-        </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );
